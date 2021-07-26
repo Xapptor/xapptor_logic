@@ -16,8 +16,8 @@ dependencies:
   url_launcher: ^6.0.9
   path_provider: ^2.0.2
   share: ^2.0.4
-  xapptor_routing:
-    path: ../xapptor_routing
+  xapptor_router:
+    path: ../xapptor_router
   xapptor_ui:
     path: ../xapptor_ui
 

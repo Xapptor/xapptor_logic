@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xapptor_routing/initial_values_routing.dart';
+import 'package:xapptor_router/initial_values_routing.dart';
 import 'package:xapptor_ui/widgets/show_custom_dialog.dart';
 
 check_payment_result(BuildContext context) {
