@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'get_main_color_from_local_image.dart';
-import 'get_widget_image_from_remote_png.dart';
+import 'get_remote_image.dart';
 
-get_main_color_from_remote_png(String url) async {
-  Image image = await get_widget_image_from_remote_png(url);
+get_main_color_from_remote_image(String url) async {
+  Image image = await get_remote_image(url);
   Color main_color = await get_main_color_from_local_image(image);
   return main_color;
 }
