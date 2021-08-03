@@ -75,7 +75,7 @@ update_item_in_array_field({
   required String document_id,
   required String collection_id,
   required String field_key,
-  required String field_value,
+  required dynamic field_value,
   required int index,
 }) async {
   await FirebaseFirestore.instance
