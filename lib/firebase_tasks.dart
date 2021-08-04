@@ -23,7 +23,7 @@ duplicate_document({
 
 update_field_in_collection({
   required String field,
-  required String value,
+  required dynamic value,
   required String collection,
 }) async {
   QuerySnapshot collection_snapshot =
