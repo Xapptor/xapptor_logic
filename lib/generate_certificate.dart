@@ -26,14 +26,14 @@ Future<String> generate_html_certificate({
   return firestore_html_certificate_text;
 }
 
-check_if_exist_certificate(
-  String course_id,
-  String course_name,
-  BuildContext context,
-) async {
+check_if_exist_certificate({
+  required String course_id,
+  required BuildContext context,
+  required bool show_has_certificate,
+}) async {
   User user = FirebaseAuth.instance.currentUser!;
   Map user_info = await get_user_info(user.uid);
-  List<String>? certificates = user_info["certificates"];
+  List? certificates = user_info["certificates"];
   print("certificates: $certificates");
 
   bool has_certificates = false;
@@ -53,35 +53,44 @@ check_if_exist_certificate(
           .get()
           .then((DocumentSnapshot snapshot_certificate) {
         String snapshot_course_id = snapshot_certificate.get("course_id");
-        print(snapshot_certificate.data);
-
         print("snapshot_certificate_course_id: " + snapshot_course_id);
+        print("course_id: " + course_id);
 
         if (snapshot_course_id == course_id) {
           has_certificate = true;
         }
+        generate_certificate(
+          user: user,
+          user_info: user_info,
+          course_id: course_id,
+          has_certificate: has_certificate,
+          context: context,
+          show_has_certificate: show_has_certificate,
+        );
       });
     }
+  } else {
+    generate_certificate(
+      user: user,
+      user_info: user_info,
+      course_id: course_id,
+      has_certificate: has_certificate,
+      context: context,
+      show_has_certificate: show_has_certificate,
+    );
   }
-
-  generate_certificate(
-    user,
-    user_info,
-    course_id,
-    course_name,
-    has_certificate,
-    context,
-  );
 }
 
-generate_certificate(
-  User user,
-  Map user_info,
-  String course_id,
-  String course_name,
-  bool has_certificate,
-  BuildContext context,
-) async {
+generate_certificate({
+  required User user,
+  required Map user_info,
+  required String course_id,
+  required bool has_certificate,
+  required bool show_has_certificate,
+  required BuildContext context,
+}) async {
+  print("has_certificate $has_certificate");
+
   if (!has_certificate) {
     FirebaseFirestore.instance.collection("certificates").add({
       "course_id": course_id,
@@ -97,6 +106,13 @@ generate_certificate(
           .doc("certificate")
           .get()
           .then((DocumentSnapshot certificate_template) async {
+        DocumentSnapshot course_snapshot = await FirebaseFirestore.instance
+            .collection("courses")
+            .doc(course_id)
+            .get();
+
+        String course_name = course_snapshot.get("name");
+
         String html_certificate = await generate_html_certificate(
           course_name: course_name,
           user_name: user_info["firstname"] + " " + user_info["lastname"],
@@ -126,11 +142,41 @@ generate_certificate(
       print(err);
     });
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("You already have this certificate 👍"),
-        duration: Duration(seconds: 3),
-      ),
-    );
+    if (show_has_certificate) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("You already have this certificate 👍"),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
+}
+
+check_if_course_is_completed({
+  required String course_id,
+  required Map<String, dynamic> user_info,
+  required BuildContext context,
+}) {
+  FirebaseFirestore.instance
+      .collection('courses')
+      .doc(course_id)
+      .get()
+      .then((course) async {
+    List units_id = course["units"];
+
+    if (user_info["units_completed"] != null) {
+      if (user_info["units_completed"].length > 0) {
+        for (var unit in user_info["units_completed"]) {
+          if (unit == units_id.last) {
+            check_if_exist_certificate(
+              course_id: course_id,
+              context: context,
+              show_has_certificate: false,
+            );
+          }
+        }
+      }
+    }
+  });
 }
