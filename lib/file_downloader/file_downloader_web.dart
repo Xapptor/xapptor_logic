@@ -3,7 +3,10 @@ import 'dart:html';
 class FileDownloader {
   FileDownloader._();
 
-  static save(String base64_string, String file_name) {
+  static save({
+    required String base64_string,
+    required String file_name,
+  }) {
     AnchorElement(
       href:
           "data:application/octet-stream;charset=utf-16le;base64,$base64_string",

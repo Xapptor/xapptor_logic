@@ -1,7 +1,10 @@
 class FileDownloader {
   FileDownloader._();
 
-  static save(String base64_string, String file_name) {
+  static save({
+    required String base64_string,
+    required String file_name,
+  }) {
     throw 'Platform Not Supported';
   }
 }
