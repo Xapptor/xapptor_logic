@@ -34,7 +34,6 @@ check_if_exist_certificate({
   User user = FirebaseAuth.instance.currentUser!;
   Map user_info = await get_user_info(user.uid);
   List? certificates = user_info["certificates"];
-  print("certificates: $certificates");
 
   bool has_certificates = false;
   bool has_certificate = false;
@@ -53,8 +52,6 @@ check_if_exist_certificate({
           .get()
           .then((DocumentSnapshot snapshot_certificate) {
         String snapshot_course_id = snapshot_certificate.get("course_id");
-        print("snapshot_certificate_course_id: " + snapshot_course_id);
-        print("course_id: " + course_id);
 
         if (snapshot_course_id == course_id) {
           has_certificate = true;
@@ -89,8 +86,6 @@ generate_certificate({
   required bool show_has_certificate,
   required BuildContext context,
 }) async {
-  print("has_certificate $has_certificate");
-
   if (!has_certificate) {
     FirebaseFirestore.instance.collection("certificates").add({
       "course_id": course_id,

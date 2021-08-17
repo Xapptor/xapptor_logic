@@ -9,7 +9,6 @@ Future<Color> get_main_color_from_remote_svg(String url) async {
 
   final directory = await getTemporaryDirectory();
   String file_path = directory.path + "/temporary.svg";
-  print("filePath: $file_path");
 
   File file = File(file_path);
   await file.writeAsBytes(remote_svg_bytes);
@@ -20,7 +19,5 @@ Future<Color> get_main_color_from_remote_svg(String url) async {
   String svg_string_color = "0xff" +
       svg_string.substring(
           svg_string_color_index + 1, svg_string_color_index + 7);
-  print("svg_string_color: $svg_string_color");
-
   return Color(int.parse(svg_string_color));
 }
