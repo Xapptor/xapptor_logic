@@ -1,8 +1,8 @@
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:http/http.dart';
 
-Future<Uint8List> get_remote_svg(String url) async {
+Future<String> get_remote_svg(String url) async {
   var response = await get(Uri.parse(url));
-  Uint8List? bytes = response.bodyBytes;
-  return bytes;
+  String body = utf8.decode(response.bodyBytes);
+  return body;
 }
