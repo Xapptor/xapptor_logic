@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cloud_firestore: ^2.4.0
+  cloud_firestore: ^2.5.1
   palette_generator: ^0.3.0
   http: ^0.13.3
   intl: ^0.17.0
