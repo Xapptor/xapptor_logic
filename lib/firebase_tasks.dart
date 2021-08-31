@@ -52,6 +52,7 @@ duplicate_item_in_array_field({
   required String field_key,
   required int index,
   required int times,
+  required Function callback,
 }) async {
   await FirebaseFirestore.instance
       .collection(collection_id)
@@ -68,6 +69,8 @@ duplicate_item_in_array_field({
     }
 
     document_snapshot.reference.update({field_key: original_array});
+
+    callback();
   });
 }
 
