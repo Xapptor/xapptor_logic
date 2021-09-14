@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 int collection_counter = 0;
@@ -160,6 +161,64 @@ delete_corrupted_accounts() async {
       }
       collection_counter++;
     });
+    print_collection_counter();
+  });
+}
+
+// ABEINSTITUTE
+
+delete_corrupted_certificates() async {
+  int certificates_counter = 0;
+  int certificates_corrupted_counter = 0;
+
+  await FirebaseFirestore.instance
+      .collection("certificates")
+      .get()
+      .then((collection) {
+    collection.docs.forEach((certificate) async {
+      certificates_counter++;
+
+      var certificate_data = certificate.data();
+      DocumentSnapshot user = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(certificate_data["user_id"])
+          .get();
+      if (!user.exists) {
+        certificates_corrupted_counter++;
+        print("id: ${certificate.id} user_id: ${certificate_data["user_id"]}");
+        certificate.reference.delete();
+      }
+    });
+
+    Timer(Duration(milliseconds: 800), () {
+      print("certificates_counter $certificates_counter");
+      print("certificates_corrupted_counter $certificates_corrupted_counter");
+    });
+  });
+}
+
+// USER GENDER
+
+update_users_gender_value() async {
+  await FirebaseFirestore.instance.collection("users").get().then((collection) {
+    collection.docs.forEach((user) async {
+      var user_data = user.data();
+      String user_gender = user_data["gender"].toLowerCase();
+
+      if (user_gender == "male" || user_gender == "hombre") {
+        user.reference.update({"gender": 0});
+      } else if (user_gender == "female" || user_gender == "mujer") {
+        user.reference.update({"gender": 1});
+      } else if (user_gender == "non-binary" || user_gender == "no-binario") {
+        user.reference.update({"gender": 2});
+      } else if (user_gender == "rather not say" ||
+          user_gender == "prefiero no decir") {
+        user.reference.update({"gender": 3});
+      }
+
+      collection_counter++;
+    });
+
     print_collection_counter();
   });
 }
