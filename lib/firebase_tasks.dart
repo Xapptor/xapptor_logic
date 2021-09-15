@@ -1,5 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:xapptor_logic/models/coupon.dart';
 
 int collection_counter = 0;
 
@@ -221,4 +224,52 @@ update_users_gender_value() async {
 
     print_collection_counter();
   });
+}
+
+// COUPONS
+
+check_if_coupon_is_valid(
+  String coupon_id,
+  BuildContext context,
+  String valid_message,
+  String invalid_message,
+) async {
+  String? user_id = FirebaseAuth.instance.currentUser?.uid;
+  bool coupon_is_valid = false;
+
+  DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance
+      .collection("coupons")
+      .doc(coupon_id)
+      .get();
+  if (coupon_snapshot.exists) {
+    Coupon coupon = Coupon.from_snapshot(
+      coupon_snapshot.id,
+      coupon_snapshot.data() as Map<String, dynamic>,
+    );
+    if (user_id != null) {
+      if (coupon.user_id == user_id) {
+        int date_diference = coupon.date_expiry.compareTo(DateTime.now());
+        if (!coupon.used) {
+          if (date_diference > 0) {
+            await coupon_snapshot.reference.update({"used": true});
+            coupon_is_valid = true;
+
+            await FirebaseFirestore.instance
+                .collection("users")
+                .doc(user_id)
+                .update({
+              "courses_acquired": FieldValue.arrayUnion([coupon.product_id]),
+            });
+          }
+        }
+      }
+    }
+  }
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(coupon_is_valid ? valid_message : invalid_message),
+      duration: Duration(seconds: coupon_is_valid ? 2 : 1),
+    ),
+  );
 }
