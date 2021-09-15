@@ -282,7 +282,15 @@ Future<bool> check_if_coupon_is_valid(
       ),
       backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
       actions: [
-        Text(""),
+        IconButton(
+          icon: const Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+          },
+        ),
       ],
     ),
   );
