@@ -229,7 +229,7 @@ update_users_gender_value() async {
 
 // COUPONS
 
-Future<bool> check_if_coupon_is_valid(
+check_if_coupon_is_valid(
   String coupon_id,
   BuildContext context,
   String valid_message,
@@ -238,16 +238,16 @@ Future<bool> check_if_coupon_is_valid(
   String? user_id = FirebaseAuth.instance.currentUser?.uid;
   bool coupon_is_valid = false;
 
-  DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance
-      .collection("coupons")
-      .doc(coupon_id)
-      .get();
-  if (coupon_snapshot.exists) {
-    Coupon coupon = Coupon.from_snapshot(
-      coupon_snapshot.id,
-      coupon_snapshot.data() as Map<String, dynamic>,
-    );
-    if (user_id != null) {
+  if (user_id != null) {
+    DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance
+        .collection("coupons")
+        .doc(coupon_id)
+        .get();
+    if (coupon_snapshot.exists) {
+      Coupon coupon = Coupon.from_snapshot(
+        coupon_snapshot.id,
+        coupon_snapshot.data() as Map<String, dynamic>,
+      );
       if (coupon.user_id == user_id) {
         int date_diference = coupon.date_expiry.compareTo(DateTime.now());
         if (!coupon.used) {
@@ -261,46 +261,51 @@ Future<bool> check_if_coupon_is_valid(
                 .update({
               "courses_acquired": FieldValue.arrayUnion([coupon.product_id]),
             });
-            open_screen("home/courses");
           }
         }
       }
     }
-  }
 
-  ScaffoldMessenger.of(context).showMaterialBanner(
-    MaterialBanner(
-      content: Text(
-        coupon_is_valid ? valid_message : invalid_message,
-        style: TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      leading: Icon(
-        coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
-        color: Colors.white,
-      ),
-      backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
-      actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.close,
+    ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        content: Text(
+          coupon_is_valid ? valid_message : invalid_message,
+          style: TextStyle(
             color: Colors.white,
           ),
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-          },
         ),
-      ],
-    ),
-  );
+        leading: Icon(
+          coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
+          color: Colors.white,
+        ),
+        backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            },
+          ),
+        ],
+      ),
+    );
 
-  Timer(
-    Duration(seconds: coupon_is_valid ? 2 : 1),
-    () {
-      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-    },
-  );
-
-  return coupon_is_valid;
+    Timer(
+      Duration(seconds: coupon_is_valid ? 2 : 1),
+      () {
+        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        Timer(
+          Duration(milliseconds: 300),
+          () {
+            if (coupon_is_valid) open_screen("home/courses");
+          },
+        );
+      },
+    );
+  } else {
+    open_screen("login");
+  }
 }
