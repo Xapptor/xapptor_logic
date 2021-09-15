@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xapptor_logic/models/coupon.dart';
+import 'package:xapptor_router/app_screens.dart';
 
 int collection_counter = 0;
 
@@ -228,7 +229,7 @@ update_users_gender_value() async {
 
 // COUPONS
 
-check_if_coupon_is_valid(
+Future<bool> check_if_coupon_is_valid(
   String coupon_id,
   BuildContext context,
   String valid_message,
@@ -260,16 +261,38 @@ check_if_coupon_is_valid(
                 .update({
               "courses_acquired": FieldValue.arrayUnion([coupon.product_id]),
             });
+            open_screen("home/courses");
           }
         }
       }
     }
   }
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(coupon_is_valid ? valid_message : invalid_message),
-      duration: Duration(seconds: coupon_is_valid ? 2 : 1),
+  ScaffoldMessenger.of(context).showMaterialBanner(
+    MaterialBanner(
+      content: Text(
+        coupon_is_valid ? valid_message : invalid_message,
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      leading: Icon(
+        coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
+        color: Colors.white,
+      ),
+      backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
+      actions: [
+        Text(""),
+      ],
     ),
   );
+
+  Timer(
+    Duration(seconds: coupon_is_valid ? 2 : 1),
+    () {
+      ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+    },
+  );
+
+  return coupon_is_valid;
 }
