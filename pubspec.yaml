@@ -10,17 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  firebase_auth: ^3.0.1
   cloud_firestore: ^2.5.1
   palette_generator: ^0.3.0
   http: ^0.13.3
   intl: ^0.17.0
-  url_launcher: ^6.0.9
+  url_launcher: ^6.0.10
   path_provider: ^2.0.2
   share: ^2.0.4
   xapptor_router:
     path: ../xapptor_router
-  xapptor_ui:
-    path: ../xapptor_ui
 
 dev_dependencies:
   flutter_test:
