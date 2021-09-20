@@ -203,7 +203,7 @@ delete_corrupted_certificates() async {
 
 // USER GENDER
 
-update_users_gender_value() async {
+update_users_gender() async {
   await FirebaseFirestore.instance.collection("users").get().then((collection) {
     collection.docs.forEach((user) async {
       var user_data = user.data();
@@ -213,7 +213,7 @@ update_users_gender_value() async {
         user.reference.update({"gender": 0});
       } else if (user_gender == "female" || user_gender == "mujer") {
         user.reference.update({"gender": 1});
-      } else if (user_gender == "non-binary" || user_gender == "no-binario") {
+      } else if (user_gender == "non binary" || user_gender == "no binario") {
         user.reference.update({"gender": 2});
       } else if (user_gender == "rather not say" ||
           user_gender == "prefiero no decir") {
