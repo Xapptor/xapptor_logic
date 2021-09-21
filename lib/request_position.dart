@@ -25,12 +25,18 @@ Future<Position> request_position() async {
   return await Geolocator.getCurrentPosition();
 }
 
-Future<List<Placemark>> request_position_address() async {
-  Position position = await request_position();
+Future<List<Placemark>> request_position_address(
+  double? lat,
+  double? long,
+) async {
+  if (lat == null || long == null) {
+    Position position = await request_position();
+    lat = position.latitude;
+    long = position.longitude;
+  }
   List<Placemark> placemarks = await placemarkFromCoordinates(
-    position.latitude,
-    position.longitude,
+    lat,
+    long,
   );
-
   return placemarks;
 }
