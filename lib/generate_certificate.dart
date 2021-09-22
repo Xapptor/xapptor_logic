@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'email_sender.dart';
+import 'send_email.dart';
 import 'get_user_info.dart';
 import 'timestamp_to_date.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -115,14 +115,13 @@ generate_certificate({
           id: new_certificate.id,
         );
 
-        EmailSender()
-            .send(
-              to: user.email!,
-              subject:
-                  "Hello ${user_info["firstname"]} ${user_info["lastname"]}, here is your $course_name certificate!",
-              text: "New Message",
-              html: html_certificate,
-            )
+        send_email(
+          to: user.email!,
+          subject:
+              "Hello ${user_info["firstname"]} ${user_info["lastname"]}, here is your $course_name certificate!",
+          text: "New Message",
+          html: html_certificate,
+        )
             .then((value) => {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
