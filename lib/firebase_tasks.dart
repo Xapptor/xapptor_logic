@@ -259,7 +259,7 @@ check_if_coupon_is_valid(
                 .collection("users")
                 .doc(user_id)
                 .update({
-              "courses_acquired": FieldValue.arrayUnion([coupon.product_id]),
+              "products_acquired": FieldValue.arrayUnion([coupon.product_id]),
             });
           }
         }
