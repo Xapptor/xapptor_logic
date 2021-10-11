@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:xapptor_logic/models/coupon.dart';
+import 'package:xapptor_logic/random_number_with_range.dart';
 import 'package:xapptor_router/app_screens.dart';
 
 int collection_counter = 0;
@@ -92,6 +94,8 @@ duplicate_document({
   required String document_id,
   required String collection_id,
   required int times,
+  String? base_id,
+  required bool apply_random_number,
 }) async {
   CollectionReference<Map<String, dynamic>> collection_reference =
       FirebaseFirestore.instance.collection(collection_id);
@@ -103,7 +107,28 @@ duplicate_document({
       .then((document_snapshot) {
     if (document_snapshot.data() != null) {
       for (var i = 0; i < times; i++) {
-        collection_reference.add(document_snapshot.data()!);
+        if (base_id != null) {
+          String counter = times == 1 ? "" : "_" + ((i + 1).toString());
+
+          if (apply_random_number) {
+            int random_numer_1 = random_number_with_range(0, 9);
+            int random_numer_2 = random_number_with_range(0, 9);
+            int random_numer_3 = random_number_with_range(0, 9);
+            int random_numer_4 = random_number_with_range(0, 9);
+
+            String random_numer =
+                "$random_numer_1$random_numer_2$random_numer_3$random_numer_4";
+
+            counter = "_$random_numer$counter";
+          }
+
+          String doc_name = "$base_id$counter";
+          print(doc_name);
+
+          collection_reference.doc(doc_name).set(document_snapshot.data()!);
+        } else {
+          collection_reference.add(document_snapshot.data()!);
+        }
       }
     }
   });
@@ -229,6 +254,19 @@ update_users_gender() async {
 
 // COUPONS
 
+generate_coupons({
+  required int times,
+  String? base_id,
+}) {
+  duplicate_document(
+    document_id: "template",
+    collection_id: "coupons",
+    times: times,
+    base_id: "$base_id\_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
+    apply_random_number: true,
+  );
+}
+
 check_if_coupon_is_valid(
   String coupon_id,
   BuildContext context,
@@ -248,11 +286,16 @@ check_if_coupon_is_valid(
         coupon_snapshot.id,
         coupon_snapshot.data() as Map<String, dynamic>,
       );
-      if (coupon.user_id == user_id) {
+
+      if (coupon.user_id.isEmpty || coupon.user_id == user_id) {
         int date_diference = coupon.date_expiry.compareTo(DateTime.now());
         if (!coupon.used) {
           if (date_diference > 0) {
-            await coupon_snapshot.reference.update({"used": true});
+            await coupon_snapshot.reference.update({
+              "used": true,
+              "user_id": user_id,
+              "date_used": FieldValue.serverTimestamp(),
+            });
             coupon_is_valid = true;
 
             await FirebaseFirestore.instance
@@ -294,7 +337,7 @@ check_if_coupon_is_valid(
     );
 
     Timer(
-      Duration(seconds: coupon_is_valid ? 2 : 1),
+      Duration(seconds: coupon_is_valid ? 2 : 2),
       () {
         ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
         Timer(

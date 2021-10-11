@@ -21,8 +21,8 @@ class Coupon {
       : id = id,
         date_created = (snapshot['date_created'] as Timestamp).toDate(),
         date_expiry = (snapshot['date_expiry'] as Timestamp).toDate(),
-        used = snapshot['used'],
-        user_id = snapshot['user_id'],
+        used = snapshot['used'] ?? false,
+        user_id = snapshot['user_id'] ?? "",
         product_id = snapshot['product_id'];
 
   Map<String, dynamic> to_json() {
