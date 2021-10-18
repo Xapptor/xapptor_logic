@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'get_remote_svg.dart';
 
+// Get main color from remote SVG.
+
 Future<Color> get_main_color_from_remote_svg(String url) async {
   String svg_string = await get_remote_svg(url);
   int svg_string_color_index = svg_string.indexOf("#");

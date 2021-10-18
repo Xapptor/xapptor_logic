@@ -13,9 +13,28 @@ print_collection_counter() {
   print("collection_counter $collection_counter");
 }
 
+// CREATE
+
+// Create coupons.
+
+create_coupons({
+  required int times,
+  String? base_id,
+}) {
+  duplicate_document(
+    document_id: "template",
+    collection_id: "coupons",
+    times: times,
+    base_id: "$base_id\_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
+    apply_random_number: true,
+  );
+}
+
 // UPDATE
 
-update_field_in_collection({
+// Update field value in collection.
+
+update_field_value_in_collection({
   required String field,
   required dynamic value,
   required String collection,
@@ -30,6 +49,8 @@ update_field_in_collection({
   print_collection_counter();
 }
 
+// Update field name in collection.
+
 update_field_name_in_collection({
   required String collection,
   required String old_field,
@@ -39,18 +60,18 @@ update_field_name_in_collection({
       await FirebaseFirestore.instance.collection(collection).get();
 
   for (var document in collection_snapshot.docs) {
-    //if (document.id == "IW1ZHfPPRRY6L6U1VHsii66grzY2") {
     update_field_name_in_document(
       collection: collection,
       document: document,
       old_field: old_field,
       new_field: new_field,
     );
-    //}
     collection_counter++;
   }
   print_collection_counter();
 }
+
+// Update field name in document.
 
 update_field_name_in_document({
   required String collection,
@@ -69,7 +90,9 @@ update_field_name_in_document({
       {old_field: FieldValue.delete(), new_field: document.get(old_field)});
 }
 
-update_item_in_array_field({
+// Update item value in array.
+
+update_item_value_in_array({
   required String document_id,
   required String collection_id,
   required String field_key,
@@ -88,7 +111,35 @@ update_item_in_array_field({
   });
 }
 
+// Update users gender.
+
+update_users_gender() async {
+  await FirebaseFirestore.instance.collection("users").get().then((collection) {
+    collection.docs.forEach((user) async {
+      var user_data = user.data();
+      String user_gender = user_data["gender"].toLowerCase();
+
+      if (user_gender == "male" || user_gender == "hombre") {
+        user.reference.update({"gender": 0});
+      } else if (user_gender == "female" || user_gender == "mujer") {
+        user.reference.update({"gender": 1});
+      } else if (user_gender == "non binary" || user_gender == "no binario") {
+        user.reference.update({"gender": 2});
+      } else if (user_gender == "rather not say" ||
+          user_gender == "prefiero no decir") {
+        user.reference.update({"gender": 3});
+      }
+
+      collection_counter++;
+    });
+
+    print_collection_counter();
+  });
+}
+
 // DUPLICATE
+
+// Duplicate document.
 
 duplicate_document({
   required String document_id,
@@ -134,7 +185,9 @@ duplicate_document({
   });
 }
 
-duplicate_item_in_array_field({
+// Duplicate item in array.
+
+duplicate_item_in_array({
   required String document_id,
   required String collection_id,
   required String field_key,
@@ -150,19 +203,21 @@ duplicate_item_in_array_field({
     Map<String, dynamic> original_field_value =
         document_snapshot.data()![field_key][index];
 
-    List original_array = document_snapshot.data()![field_key];
+    List new_array = document_snapshot.data()![field_key];
 
     for (var i = 0; i < times; i++) {
-      original_array.add(original_field_value);
+      new_array.add(original_field_value);
     }
 
-    document_snapshot.reference.update({field_key: original_array});
+    document_snapshot.reference.update({field_key: new_array});
 
     callback();
   });
 }
 
 // DELETE
+
+// Delete field in collection.
 
 delete_field_in_collection({
   required String field,
@@ -177,6 +232,8 @@ delete_field_in_collection({
   }
   print_collection_counter();
 }
+
+// Delete corrupted accounts.
 
 delete_corrupted_accounts() async {
   await FirebaseFirestore.instance.collection("users").get().then((collection) {
@@ -194,7 +251,7 @@ delete_corrupted_accounts() async {
   });
 }
 
-// ABEINSTITUTE
+// Delete corrupted certificates.
 
 delete_corrupted_certificates() async {
   int certificates_counter = 0;
@@ -226,46 +283,9 @@ delete_corrupted_certificates() async {
   });
 }
 
-// USER GENDER
+// CHECK
 
-update_users_gender() async {
-  await FirebaseFirestore.instance.collection("users").get().then((collection) {
-    collection.docs.forEach((user) async {
-      var user_data = user.data();
-      String user_gender = user_data["gender"].toLowerCase();
-
-      if (user_gender == "male" || user_gender == "hombre") {
-        user.reference.update({"gender": 0});
-      } else if (user_gender == "female" || user_gender == "mujer") {
-        user.reference.update({"gender": 1});
-      } else if (user_gender == "non binary" || user_gender == "no binario") {
-        user.reference.update({"gender": 2});
-      } else if (user_gender == "rather not say" ||
-          user_gender == "prefiero no decir") {
-        user.reference.update({"gender": 3});
-      }
-
-      collection_counter++;
-    });
-
-    print_collection_counter();
-  });
-}
-
-// COUPONS
-
-generate_coupons({
-  required int times,
-  String? base_id,
-}) {
-  duplicate_document(
-    document_id: "template",
-    collection_id: "coupons",
-    times: times,
-    base_id: "$base_id\_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
-    apply_random_number: true,
-  );
-}
+// Check if coupon is valid.
 
 check_if_coupon_is_valid(
   String coupon_id,

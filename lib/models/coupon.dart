@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Coupon Model.
+
 class Coupon {
   final String id;
   final DateTime date_created;

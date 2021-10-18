@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:universal_platform/universal_platform.dart';
 
+// Check if payments are enabled in the current platform.
+// Search param in metadata collection of Firebase Firestore.
+
 Future<bool> check_if_payments_are_enabled() async {
   DocumentSnapshot payment_snapshot = await FirebaseFirestore.instance
       .collection("metadata")

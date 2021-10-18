@@ -1,5 +1,7 @@
 import 'dart:html';
 
+// Download file directly.
+
 class FileDownloader {
   FileDownloader._();
 

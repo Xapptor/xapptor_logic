@@ -5,7 +5,9 @@ import 'get_user_info.dart';
 import 'timestamp_to_date.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<String> generate_html_certificate({
+// Get HTML certificate.
+
+Future<String> get_html_certificate({
   required String course_name,
   required String user_name,
   required String date,
@@ -25,6 +27,8 @@ Future<String> generate_html_certificate({
 
   return firestore_html_certificate_text;
 }
+
+// Check if exist certificate.
 
 check_if_exist_certificate({
   required String course_id,
@@ -56,7 +60,7 @@ check_if_exist_certificate({
         if (snapshot_course_id == course_id) {
           has_certificate = true;
         }
-        generate_certificate(
+        save_certificate(
           user: user,
           user_info: user_info,
           course_id: course_id,
@@ -67,7 +71,7 @@ check_if_exist_certificate({
       });
     }
   } else {
-    generate_certificate(
+    save_certificate(
       user: user,
       user_info: user_info,
       course_id: course_id,
@@ -78,7 +82,9 @@ check_if_exist_certificate({
   }
 }
 
-generate_certificate({
+// Save certificate.
+
+save_certificate({
   required User user,
   required Map user_info,
   required String course_id,
@@ -108,7 +114,7 @@ generate_certificate({
 
         String course_name = course_snapshot.get("name");
 
-        String html_certificate = await generate_html_certificate(
+        String html_certificate = await get_html_certificate(
           course_name: course_name,
           user_name: user_info["firstname"] + " " + user_info["lastname"],
           date: timestamp_to_date(certificate_template.get("date")),
@@ -147,7 +153,9 @@ generate_certificate({
   }
 }
 
-check_if_course_is_completed({
+// Check if course was completed.
+
+check_if_course_was_completed({
   required String course_id,
   required Map<String, dynamic> user_info,
   required BuildContext context,

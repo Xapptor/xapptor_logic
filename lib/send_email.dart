@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Send an email.
+
 send_email({
   required String to,
   required String subject,

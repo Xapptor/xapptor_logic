@@ -1,5 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
+// Launch URL with fallback.
+
 Future<void> launch_url(String url, String fallback_url) async {
   try {
     bool launched = await launch(
