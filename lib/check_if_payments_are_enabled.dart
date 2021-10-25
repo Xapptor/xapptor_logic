@@ -5,19 +5,19 @@ import 'package:universal_platform/universal_platform.dart';
 // Search param in metadata collection of Firebase Firestore.
 
 Future<bool> check_if_payments_are_enabled() async {
-  DocumentSnapshot payment_snapshot = await FirebaseFirestore.instance
+  var payment_snap = await FirebaseFirestore.instance
       .collection("metadata")
       .doc("payments")
       .get();
-  Map payment_data = payment_snapshot.data() as Map;
+  Map payment_data = payment_snap.data()!;
   bool payment_enabled = false;
 
   if (UniversalPlatform.isAndroid) {
-    payment_enabled = payment_data["android"] ?? false;
+    payment_enabled = payment_data["enabled"]["android"] ?? false;
   } else if (UniversalPlatform.isIOS) {
-    payment_enabled = payment_data["ios"] ?? false;
+    payment_enabled = payment_data["enabled"]["ios"] ?? false;
   } else if (UniversalPlatform.isWeb) {
-    payment_enabled = payment_data["web"] ?? false;
+    payment_enabled = payment_data["enabled"]["web"] ?? false;
   }
   return payment_enabled;
 }
