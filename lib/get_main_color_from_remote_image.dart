@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'get_main_color_from_local_image.dart';
+import 'get_main_color_from_image.dart';
 import 'get_remote_image.dart';
 
 // Get main color from remote image.
