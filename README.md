@@ -1,4 +1,5 @@
 # **Xapptor Logic**
+[![pub package](https://img.shields.io/pub/v/xapptor_logic?color=blue)](https://pub.dartlang.org/packages/xapptor_logic)
 ### Logic Module for util functions like cross-platform downloaders and functions to retrieve remote info.
 
 ## **Let's get started**
@@ -7,7 +8,7 @@
 ##### Add it to your package's pubspec.yaml file
 ```yml
 dependencies:
-    xapptor_logic: ^0.0.1
+    xapptor_logic: ^0.0.2
 ```
 
 ### **2 - Install it**
