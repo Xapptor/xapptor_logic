@@ -1,6 +1,6 @@
 name: xapptor_logic
-description: A new Flutter package project.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+description: Logic Module for util functions like cross-platform downloaders and functions to retrieve remote info.
+repository: https://github.com/Xapptor/xapptor_logic
 version: 0.0.1
 
 environment:
@@ -22,8 +22,7 @@ dependencies:
   geocoding: ^2.0.1
   universal_platform: ^1.0.0+1
 
-  xapptor_router:
-    path: ../xapptor_router
+  xapptor_router: ^0.0.1
 
 dev_dependencies:
   flutter_test:
