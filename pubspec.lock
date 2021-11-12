@@ -500,10 +500,10 @@ packages:
   xapptor_router:
     dependency: "direct main"
     description:
-      path: "../xapptor_router"
-      relative: true
-    source: path
-    version: "0.0.1"
+      name: xapptor_router
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   xdg_directories:
     dependency: transitive
     description:
