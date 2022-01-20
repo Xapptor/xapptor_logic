@@ -286,6 +286,24 @@ delete_corrupted_certificates() async {
   });
 }
 
+// Delete document that contains id similar to.
+
+delete_document_that_contains_id_similar_to({
+  required String id,
+  required String collection,
+}) async {
+  QuerySnapshot collection_snapshot =
+      await FirebaseFirestore.instance.collection(collection).get();
+
+  for (var document in collection_snapshot.docs) {
+    if (document.id.contains(id)) {
+      document.reference.delete();
+      collection_counter++;
+    }
+  }
+  print_collection_counter();
+}
+
 // CHECK
 
 // Check if coupon is valid.
