@@ -286,9 +286,9 @@ delete_corrupted_certificates() async {
   });
 }
 
-// Delete document that contains id similar to.
+// Delete documents that contains id similar to.
 
-delete_document_that_contains_id_similar_to({
+delete_documents_that_contains_id_similar_to({
   required String id,
   required String collection,
 }) async {
@@ -297,6 +297,26 @@ delete_document_that_contains_id_similar_to({
 
   for (var document in collection_snapshot.docs) {
     if (document.id.contains(id)) {
+      document.reference.delete();
+      collection_counter++;
+    }
+  }
+  print_collection_counter();
+}
+
+// Delete documents that contains a field with a value similar to.
+
+delete_documents_that_contains_field_with_value_similar_to({
+  required String field,
+  required String value,
+  required String collection,
+}) async {
+  QuerySnapshot collection_snapshot =
+      await FirebaseFirestore.instance.collection(collection).get();
+
+  for (var document in collection_snapshot.docs) {
+    Map doc_data = document.data() as Map;
+    if (doc_data[field].toString().contains(value)) {
       document.reference.delete();
       collection_counter++;
     }
