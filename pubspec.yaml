@@ -1,7 +1,7 @@
 name: xapptor_logic
 description: Logic Module for util functions like cross-platform downloaders and functions to retrieve remote info.
 repository: https://github.com/Xapptor/xapptor_logic
-version: 0.0.2
+version: 0.0.3
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_auth: ^3.2.0
-  cloud_firestore: ^2.5.4
+  cloud_firestore: ^3.1.6
   palette_generator: ^0.3.2
   http: ^0.13.4
   intl: ^0.17.0
@@ -21,6 +21,7 @@ dependencies:
   geolocator: ^7.7.1
   geocoding: ^2.0.1
   universal_platform: ^1.0.0+1
+  syncfusion_flutter_xlsio: ^19.4.42-beta
   
   xapptor_router: ^0.0.2
 
