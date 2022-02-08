@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:xapptor_logic/models/coupon.dart';
 import 'package:xapptor_logic/random_number_with_range.dart';
-import 'package:xapptor_router/app_screens.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xlsio;
 import 'file_downloader/file_downloader.dart';
 
@@ -328,7 +327,7 @@ delete_documents_that_contains_field_with_value_similar_to({
 
 // Check if coupon is valid.
 
-check_if_coupon_is_valid(
+Future<String> check_if_coupon_is_valid(
   String coupon_id,
   BuildContext context,
   String valid_message,
@@ -337,81 +336,72 @@ check_if_coupon_is_valid(
   String? user_id = FirebaseAuth.instance.currentUser?.uid;
   bool coupon_is_valid = false;
 
-  if (user_id != null) {
-    DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance
-        .collection("coupons")
-        .doc(coupon_id)
-        .get();
-    if (coupon_snapshot.exists) {
-      Coupon coupon = Coupon.from_snapshot(
-        coupon_snapshot.id,
-        coupon_snapshot.data() as Map<String, dynamic>,
-      );
+  if (user_id == null) return "login";
 
-      if (coupon.user_id.isEmpty || coupon.user_id == user_id) {
-        int date_diference = coupon.date_expiry.compareTo(DateTime.now());
-        if (!coupon.used) {
-          if (date_diference > 0) {
-            await coupon_snapshot.reference.update({
-              "used": true,
-              "user_id": user_id,
-              "date_used": FieldValue.serverTimestamp(),
-            });
-            coupon_is_valid = true;
+  DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance
+      .collection("coupons")
+      .doc(coupon_id)
+      .get();
 
-            await FirebaseFirestore.instance
-                .collection("users")
-                .doc(user_id)
-                .update({
-              "products_acquired": FieldValue.arrayUnion([coupon.product_id]),
-            });
-          }
+  if (coupon_snapshot.exists) {
+    Coupon coupon = Coupon.from_snapshot(
+      coupon_snapshot.id,
+      coupon_snapshot.data() as Map<String, dynamic>,
+    );
+
+    if (coupon.user_id.isEmpty || coupon.user_id == user_id) {
+      int date_diference = coupon.date_expiry.compareTo(DateTime.now());
+      if (!coupon.used) {
+        if (date_diference > 0) {
+          coupon_is_valid = true;
+
+          await coupon_snapshot.reference.update({
+            "used": true,
+            "user_id": user_id,
+            "date_used": FieldValue.serverTimestamp(),
+          });
+
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(user_id)
+              .update({
+            "products_acquired": FieldValue.arrayUnion([coupon.product_id]),
+          });
         }
       }
     }
+  }
 
-    ScaffoldMessenger.of(context).showMaterialBanner(
-      MaterialBanner(
-        content: Text(
-          coupon_is_valid ? valid_message : invalid_message,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        leading: Icon(
-          coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
+  ScaffoldMessenger.of(context).showMaterialBanner(
+    MaterialBanner(
+      content: Text(
+        coupon_is_valid ? valid_message : invalid_message,
+        style: TextStyle(
           color: Colors.white,
         ),
-        backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.close,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-            },
-          ),
-        ],
       ),
-    );
-
-    Timer(
-      Duration(seconds: coupon_is_valid ? 2 : 2),
-      () {
-        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-        Timer(
-          Duration(milliseconds: 300),
-          () {
-            if (coupon_is_valid) open_screen("home/courses");
+      leading: Icon(
+        coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
+        color: Colors.white,
+      ),
+      backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
+      actions: [
+        IconButton(
+          icon: const Icon(
+            Icons.close,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
           },
-        );
-      },
-    );
-  } else {
-    open_screen("login");
-  }
+        ),
+      ],
+    ),
+  );
+
+  await Future.delayed(Duration(milliseconds: 2300));
+  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+  return coupon_is_valid ? "home/courses" : "";
 }
 
 // GET
