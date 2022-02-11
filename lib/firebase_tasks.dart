@@ -350,9 +350,9 @@ Future<String> check_if_coupon_is_valid(
     );
 
     if (coupon.user_id.isEmpty || coupon.user_id == user_id) {
-      int date_diference = coupon.date_expiry.compareTo(DateTime.now());
+      int date_difference = coupon.date_expiry.compareTo(DateTime.now());
       if (!coupon.used) {
-        if (date_diference > 0) {
+        if (date_difference > 0) {
           coupon_is_valid = true;
 
           await coupon_snapshot.reference.update({
