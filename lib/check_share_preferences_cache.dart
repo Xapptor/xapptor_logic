@@ -4,7 +4,7 @@ check_share_preferences_cache({
   required String key_to_check,
   required String similar_keys_to_delete,
   required List<String> specific_keys_to_delete,
-  required int cache_life_period_in_seconds,
+  required int cache_lifetime_in_seconds,
 }) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -32,7 +32,7 @@ check_share_preferences_cache({
     //print("date_difference_in_days: $date_difference_in_days");
     //print("cache_life_period_in_seconds: $cache_life_period_in_seconds");
 
-    if (date_difference_in_seconds > cache_life_period_in_seconds) {
+    if (date_difference_in_seconds > cache_lifetime_in_seconds) {
       final prefs_keys = prefs.getKeys();
       for (String prefs_key in prefs_keys) {
         if (prefs_key.contains(similar_keys_to_delete)) {
