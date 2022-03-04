@@ -6,14 +6,19 @@ send_email({
   required String to,
   required String subject,
   required String text,
-  required String html,
+  String? html,
 }) async {
-  FirebaseFirestore.instance.collection("emails").doc().set({
+  var email_json = {
     "to": to,
     "message": {
       "subject": subject,
       "text": text,
-      "html": html,
     }
-  });
+  };
+
+  if (html != null) {
+    email_json["html"] = html;
+  }
+
+  FirebaseFirestore.instance.collection("emails").doc().set(email_json);
 }
