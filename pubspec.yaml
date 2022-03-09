@@ -26,6 +26,12 @@ dependencies:
   shared_preferences: ^2.0.13
   characters: ^1.2.0
 
+  xapptor_router: ^0.0.2
+
+dependency_overrides:
+  xapptor_router:
+    path: ../xapptor_router
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
