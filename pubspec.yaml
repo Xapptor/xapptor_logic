@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_auth: ^3.3.7
-  cloud_firestore: ^3.1.8
+  cloud_firestore: ^3.1.10
 
   palette_generator: ^0.3.2
   http: ^0.13.4
