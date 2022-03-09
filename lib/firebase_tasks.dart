@@ -493,7 +493,7 @@ get_coupons_usage_info(
         .replaceFirst(".", "_");
 
     FileDownloader.save(
-      base64_string: base64Encode(workbook.saveAsStream()),
+      src: base64Encode(workbook.saveAsStream()),
       file_name: file_name,
     );
     workbook.dispose();

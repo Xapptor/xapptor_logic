@@ -10,10 +10,11 @@ class FileDownloader {
   FileDownloader._();
 
   static save({
-    required String base64_string,
+    // Source could be Base64 or Url
+    required String src,
     required String file_name,
   }) async {
-    Uint8List bytes = base64.decode(base64_string);
+    Uint8List bytes = base64.decode(src);
     final directory = await getTemporaryDirectory();
     String file_path = directory.path + "/" + file_name;
     print("filePath: $file_path");
