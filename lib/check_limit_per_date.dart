@@ -116,7 +116,6 @@ add_new_value({
     (limit_field[array_field_name] as List).add(new_value);
   }
   await user_snap.reference.update({limit_field_name: limit_field});
-  print("check_limit_per_date_callback");
   check_limit_per_date_callback();
 }
 
