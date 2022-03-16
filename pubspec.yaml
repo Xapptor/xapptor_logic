@@ -25,6 +25,7 @@ dependencies:
   syncfusion_flutter_xlsio: ^19.4.42-beta
   shared_preferences: ^2.0.13
   characters: ^1.2.0
+  crypto: ^3.0.1
 
   xapptor_router: ^0.0.2
 
