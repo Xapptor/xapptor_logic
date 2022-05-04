@@ -9,7 +9,7 @@ import 'package:share_plus/share_plus.dart';
 class FileDownloader {
   FileDownloader._();
 
-  static save({
+  static Future save({
     // Source could be Base64 or Url
     required String src,
     required String file_name,
@@ -20,6 +20,6 @@ class FileDownloader {
     print("filePath: $file_path");
     final file = File(file_path);
     await file.writeAsBytes(bytes);
-    Share.shareFiles([file_path]);
+    await Share.shareFiles([file_path]);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:xapptor_logic/models/coupon.dart';
 import 'package:xapptor_logic/random_number_with_range.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xlsio;
 import 'file_downloader/file_downloader.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 int collection_counter = 0;
 
@@ -498,4 +500,40 @@ get_coupons_usage_info(
     );
     workbook.dispose();
   });
+}
+
+// Firebase Storage
+
+// Save temporary File
+
+Function storage_temporary_file_callback = () {};
+
+Future<StorageTemporaryFile> save_temporary_file({
+  required Uint8List bytes,
+  required String file_name,
+  required String user_id,
+}) async {
+  Reference temporal_doc_storage_ref =
+      FirebaseStorage.instance.ref("users/$user_id/temporal/$file_name");
+
+  await temporal_doc_storage_ref.putData(bytes);
+
+  StorageTemporaryFile storage_temporary_file = StorageTemporaryFile(
+    url: await temporal_doc_storage_ref.getDownloadURL(),
+    callback: () {
+      temporal_doc_storage_ref.delete();
+    },
+  );
+  storage_temporary_file_callback = storage_temporary_file.callback;
+  return storage_temporary_file;
+}
+
+class StorageTemporaryFile {
+  StorageTemporaryFile({
+    required this.url,
+    required this.callback,
+  });
+
+  final String url;
+  final Function callback;
 }

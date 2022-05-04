@@ -1,7 +1,7 @@
 class FileDownloader {
   FileDownloader._();
 
-  static save({
+  static Future save({
     required String src,
     required String file_name,
   }) {
