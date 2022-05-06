@@ -10,14 +10,13 @@ class FileDownloader {
   FileDownloader._();
 
   static Future save({
-    // Source could be Base64 or Url
-    required String src,
+    required String src, // Source could be Base64 or Url
     required String file_name,
   }) async {
     Uint8List bytes = base64.decode(src);
     final directory = await getTemporaryDirectory();
     String file_path = directory.path + "/" + file_name;
-    print("filePath: $file_path");
+
     final file = File(file_path);
     await file.writeAsBytes(bytes);
     await Share.shareFiles([file_path]);
