@@ -24,6 +24,8 @@ print_collection_counter() {
 create_coupons({
   required int times,
   String? base_id,
+  Map<String, dynamic>? add_values,
+  Map<String, dynamic>? update_values,
 }) {
   duplicate_document(
     document_id: "template",
@@ -31,6 +33,8 @@ create_coupons({
     times: times,
     base_id: "$base_id\_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
     apply_random_number: true,
+    add_values: add_values,
+    update_values: update_values,
   );
 }
 
@@ -151,6 +155,8 @@ duplicate_document({
   required int times,
   String? base_id,
   required bool apply_random_number,
+  Map<String, dynamic>? add_values,
+  Map<String, dynamic>? update_values,
 }) async {
   CollectionReference<Map<String, dynamic>> collection_reference =
       FirebaseFirestore.instance.collection(collection_id);
@@ -162,6 +168,22 @@ duplicate_document({
       .then((document_snapshot) {
     if (document_snapshot.data() != null) {
       for (var i = 0; i < times; i++) {
+        Map<String, dynamic> new_data = document_snapshot.data()!;
+
+        if (add_values != null) {
+          add_values.forEach((key, value) {
+            new_data[key] = value;
+          });
+        }
+
+        if (update_values != null) {
+          update_values.forEach((key, value) {
+            if (new_data[key] != null) {
+              new_data[key] = value;
+            }
+          });
+        }
+
         if (base_id != null) {
           String counter = times == 1 ? "" : "_" + ((i + 1).toString());
 
@@ -180,9 +202,9 @@ duplicate_document({
           String doc_name = "$base_id$counter";
           print(doc_name);
 
-          collection_reference.doc(doc_name).set(document_snapshot.data()!);
+          collection_reference.doc(doc_name).set(new_data);
         } else {
-          collection_reference.add(document_snapshot.data()!);
+          collection_reference.add(new_data);
         }
       }
     }
@@ -506,34 +528,28 @@ get_coupons_usage_info(
 
 // Save temporary File
 
-Function storage_temporary_file_callback = () {};
-
-Future<StorageTemporaryFile> save_temporary_file({
+Future<String> save_temporary_file({
   required Uint8List bytes,
   required String file_name,
-  required String user_id,
+  int temp_minutes_cache = 5,
 }) async {
-  Reference temporal_doc_storage_ref =
-      FirebaseStorage.instance.ref("users/$user_id/temporal/$file_name");
+  Reference temp_file_ref = FirebaseStorage.instance.ref("temp/$file_name");
+  ListResult temp_folder_ref =
+      await FirebaseStorage.instance.ref("temp").listAll();
 
-  await temporal_doc_storage_ref.putData(bytes);
+  // First delete old files in temp folder
 
-  StorageTemporaryFile storage_temporary_file = StorageTemporaryFile(
-    url: await temporal_doc_storage_ref.getDownloadURL(),
-    callback: () {
-      temporal_doc_storage_ref.delete();
-    },
-  );
-  storage_temporary_file_callback = storage_temporary_file.callback;
-  return storage_temporary_file;
-}
+  temp_folder_ref.items.forEach((item) async {
+    FullMetadata item_metadata = await item.getMetadata();
+    int minutes_difference =
+        DateTime.now().difference(item_metadata.timeCreated!).inMinutes;
 
-class StorageTemporaryFile {
-  StorageTemporaryFile({
-    required this.url,
-    required this.callback,
+    if (minutes_difference >= temp_minutes_cache) {
+      item.delete();
+    }
   });
 
-  final String url;
-  final Function callback;
+  await temp_file_ref.putData(bytes);
+  String url = await temp_file_ref.getDownloadURL();
+  return url;
 }
