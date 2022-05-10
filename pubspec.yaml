@@ -14,7 +14,7 @@ dependencies:
   cloud_firestore: ^3.1.10
   firebase_storage: ^10.2.15
 
-  palette_generator: ^0.3.2
+  palette_generator: ^0.3.3
   http: ^0.13.4
   intl: ^0.17.0
   url_launcher: ^6.0.12
