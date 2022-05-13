@@ -4,26 +4,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future<void> launch_url(String url, String fallback_url) async {
   try {
-    bool launched = await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    );
+    bool launched = await launchUrl(Uri.parse(url));
 
-    if (!launched)
-      await launch(
-        fallback_url,
-        forceSafariVC: false,
-        forceWebView: false,
-        headers: <String, String>{'my_header_key': 'my_header_value'},
-      );
+    if (!launched) await launchUrl(Uri.parse(fallback_url));
   } catch (e) {
-    await launch(
-      fallback_url,
-      forceSafariVC: false,
-      forceWebView: false,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    );
+    await launchUrl(Uri.parse(fallback_url));
   }
 }
