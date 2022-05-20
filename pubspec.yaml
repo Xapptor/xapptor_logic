@@ -29,6 +29,7 @@ dependencies:
   crypto: ^3.0.1
 
   xapptor_router: ^0.0.2
+  device_info_plus: ^3.2.3
 
 dependency_overrides:
   xapptor_router:
