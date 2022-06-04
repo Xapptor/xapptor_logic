@@ -24,7 +24,7 @@ dependencies:
   geocoding: ^2.0.1
   universal_platform: ^1.0.0+1
   syncfusion_flutter_xlsio: ^19.4.42-beta
-  shared_preferences: ^2.0.13
+  shared_preferences: ^2.0.15
   characters: ^1.2.0
   crypto: ^3.0.1
 
