@@ -347,6 +347,17 @@ delete_documents_that_contains_field_with_value_similar_to({
   print_collection_counter();
 }
 
+// Delete all files in a path
+
+delete_all_files_in_a_path({
+  required String path,
+}) async {
+  ListResult folder_ref = await FirebaseStorage.instance.ref(path).listAll();
+  folder_ref.items.forEach((item) async {
+    item.delete();
+  });
+}
+
 // CHECK
 
 // Check if coupon is valid.
