@@ -356,6 +356,10 @@ delete_all_files_in_a_path({
   folder_ref.items.forEach((item) async {
     item.delete();
   });
+
+  folder_ref.prefixes.forEach((prefix) async {
+    delete_all_files_in_a_path(path: prefix.fullPath);
+  });
 }
 
 // CHECK
