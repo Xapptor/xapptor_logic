@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-check_share_preferences_cache({
+clean_share_preferences_cache({
   required String key_to_check,
   required String similar_keys_to_delete,
   required List<String> specific_keys_to_delete,
