@@ -16,25 +16,24 @@ dependencies:
 
   palette_generator: ^0.3.3
   http: ^0.13.4
-  intl: ^0.18.0
+  intl: ^0.17.0
   url_launcher: ^6.1.2
   path_provider: ^2.0.10
   share_plus: ^4.0.4
   geolocator: ^9.0.2
   geocoding: ^2.0.1
   universal_platform: ^1.0.0+1
-  syncfusion_flutter_xlsio: ^19.4.42-beta
+  syncfusion_flutter_xlsio: ^20.4.48-beta
   shared_preferences: ^2.0.15
   characters: ^1.2.0
   crypto: ^3.0.1
-
-  xapptor_router: ^0.0.2
   device_info_plus: ^3.2.3
 
-dependency_overrides:
+  # xapptor_router: ^0.0.2
+
   xapptor_router:
     path: ../xapptor_router
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
