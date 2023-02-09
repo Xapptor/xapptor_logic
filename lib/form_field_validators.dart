@@ -2,6 +2,7 @@
 
 enum FormFieldValidatorsType {
   email,
+  phone,
   password,
   name,
   custom,
@@ -37,6 +38,10 @@ class FormFieldValidators {
         }
         break;
 
+      case FormFieldValidatorsType.phone:
+        {}
+        break;
+
       case FormFieldValidatorsType.password:
         {}
         break;
@@ -67,26 +72,37 @@ class FormFieldValidators {
         break;
     }
 
-    // Password length must be longer than 7, has a number, has a letter, contain upper and lowercase characters.
+    bool has_number = false;
+    bool has_letter = false;
+    bool has_uppercase = false;
+    bool has_lowercase = false;
 
+    for (int i = 0; i < value.length; i++) {
+      String subvalue = value.substring(i, i + 1);
+      if (int.tryParse(subvalue) != null) {
+        has_number = true;
+      } else {
+        has_letter = true;
+        if (subvalue.toUpperCase() == subvalue) has_uppercase = true;
+        if (subvalue.toLowerCase() == subvalue) has_lowercase = true;
+      }
+    }
+
+    if (type == FormFieldValidatorsType.phone) {
+      if (has_number) {
+        if (!has_letter) {
+          return null;
+        } else {
+          return "Cannot contain characters";
+        }
+      } else {
+        return "Must contain numbers";
+      }
+    }
+
+    // Password length must be longer than 7, has a number, has a letter, contain upper and lowercase characters.
     if (type == FormFieldValidatorsType.password) {
       if (value.length > 7) {
-        bool has_number = false;
-        bool has_letter = false;
-        bool has_uppercase = false;
-        bool has_lowercase = false;
-
-        for (int i = 0; i < value.length; i++) {
-          String subvalue = value.substring(i, i + 1);
-          if (int.tryParse(subvalue) != null) {
-            has_number = true;
-          } else {
-            has_letter = true;
-            if (subvalue.toUpperCase() == subvalue) has_uppercase = true;
-            if (subvalue.toLowerCase() == subvalue) has_lowercase = true;
-          }
-        }
-
         if (has_number) {
           if (has_letter) {
             if (has_uppercase) {
