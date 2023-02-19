@@ -4,6 +4,7 @@ enum FormFieldValidatorsType {
   email,
   phone,
   password,
+  sms_code,
   name,
   custom,
 }
@@ -43,6 +44,10 @@ class FormFieldValidators {
         break;
 
       case FormFieldValidatorsType.password:
+        {}
+        break;
+
+      case FormFieldValidatorsType.sms_code:
         {}
         break;
 
@@ -99,9 +104,8 @@ class FormFieldValidators {
         return "Must contain numbers";
       }
     }
-
     // Password length must be longer than 7, has a number, has a letter, contain upper and lowercase characters.
-    if (type == FormFieldValidatorsType.password) {
+    else if (type == FormFieldValidatorsType.password) {
       if (value.length > 7) {
         if (has_number) {
           if (has_letter) {
@@ -122,6 +126,20 @@ class FormFieldValidators {
         }
       } else {
         return "At least 8 characters";
+      }
+    } else if (type == FormFieldValidatorsType.sms_code) {
+      if (value.length == 6) {
+        if (has_number) {
+          if (!has_letter) {
+            return null;
+          } else {
+            return "Cannot contain characters";
+          }
+        } else {
+          return "Must contain numbers";
+        }
+      } else {
+        return "Must contain 6 digits";
       }
     } else {
       RegExp regex = new RegExp(pattern.toString());
