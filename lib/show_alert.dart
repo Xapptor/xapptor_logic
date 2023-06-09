@@ -11,9 +11,9 @@ show_alert({
   required BuildContext context,
   required String message,
   required AlertType alert_type,
-  required Duration duration,
+  required Duration delay,
 }) {
-  Timer(duration, () {
+  Timer(delay, () {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: Duration(seconds: 3),
@@ -33,38 +33,38 @@ show_alert({
 show_success_alert({
   required BuildContext context,
   required String message,
-  Duration duration = Duration.zero,
+  Duration delay = Duration.zero,
 }) {
   show_alert(
     context: context,
     message: message,
     alert_type: AlertType.success,
-    duration: duration,
+    delay: delay,
   );
 }
 
 show_neutral_alert({
   required BuildContext context,
   required String message,
-  Duration duration = Duration.zero,
+  Duration delay = Duration.zero,
 }) {
   show_alert(
     context: context,
     message: message,
     alert_type: AlertType.neutral,
-    duration: duration,
+    delay: delay,
   );
 }
 
 show_error_alert({
   required BuildContext context,
   required String message,
-  Duration duration = Duration.zero,
+  Duration delay = Duration.zero,
 }) {
   show_alert(
     context: context,
     message: message,
     alert_type: AlertType.error,
-    duration: duration,
+    delay: delay,
   );
 }
