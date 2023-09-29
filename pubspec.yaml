@@ -9,9 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_auth: ^4.2.0
-  cloud_firestore: ^4.3.2
-  firebase_storage: ^11.0.11
+  firebase_auth: ^4.10.0
+  cloud_firestore: ^4.9.2
+  firebase_storage: ^11.2.7
 
   palette_generator: ^0.3.3
   http: ^1.1.0
