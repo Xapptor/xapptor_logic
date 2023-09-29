@@ -15,8 +15,8 @@ dependencies:
 
   palette_generator: ^0.3.3
   http: ^1.1.0
-  intl: ^0.18.0
-  url_launcher: ^6.1.2
+  intl: ^0.18.1
+  url_launcher: ^6.1.14
   path_provider: ^2.0.10
   share_plus: ^7.1.0
   geolocator: ^10.1.0
@@ -25,7 +25,7 @@ dependencies:
   syncfusion_flutter_xlsio: ^23.1.38
   shared_preferences: ^2.0.15
   characters: ^1.2.0
-  crypto: ^3.0.1
+  crypto: ^3.0.3
   device_info_plus: ^9.0.2
 
   # xapptor_router: ^0.0.2
