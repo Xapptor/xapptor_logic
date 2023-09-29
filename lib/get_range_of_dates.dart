@@ -12,7 +12,7 @@ List<DateTime> get_range_of_dates(DateTime date_1, DateTime date_2) {
       ),
     );
   }
-  //print("range_of_dates");
-  //print(range_of_dates);
+  //debugPrint("range_of_dates");
+  //debugPrint(range_of_dates);
   return range_of_dates;
 }

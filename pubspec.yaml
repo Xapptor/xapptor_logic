@@ -1,6 +1,7 @@
 name: xapptor_logic
 description: Logic Module for util functions like cross-platform downloaders and functions to retrieve remote info.
-repository: https://github.com/Xapptor/xapptor_logic
+# repository: https://github.com/Xapptor/xapptor_logic
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 0.0.3
 
 environment:

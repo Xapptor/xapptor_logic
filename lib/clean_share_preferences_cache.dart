@@ -19,18 +19,15 @@ clean_share_preferences_cache({
       DateTime.now().toString(),
     );
   } else {
-    DateTime last_date_translations_updated =
-        DateTime.parse(prefs.getString(key_to_check)!);
+    DateTime last_date_translations_updated = DateTime.parse(prefs.getString(key_to_check)!);
 
-    int date_difference_in_seconds =
-        DateTime.now().difference(last_date_translations_updated).inSeconds;
+    int date_difference_in_seconds = DateTime.now().difference(last_date_translations_updated).inSeconds;
 
-    int date_difference_in_days =
-        (date_difference_in_seconds / Duration.secondsPerDay).floor();
+    int date_difference_in_days = (date_difference_in_seconds / Duration.secondsPerDay).floor();
 
-    //print("date_difference_in_seconds: $date_difference_in_seconds");
-    //print("date_difference_in_days: $date_difference_in_days");
-    //print("cache_life_period_in_seconds: $cache_life_period_in_seconds");
+    //debugPrint("date_difference_in_seconds: $date_difference_in_seconds");
+    //debugPrint("date_difference_in_days: $date_difference_in_days");
+    //debugPrint("cache_life_period_in_seconds: $cache_life_period_in_seconds");
 
     if (date_difference_in_seconds > cache_lifetime_in_seconds) {
       final prefs_keys = prefs.getKeys();

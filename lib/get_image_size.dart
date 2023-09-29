@@ -15,7 +15,7 @@ Future<Size> get_image_size({
       },
     ),
   );
-  //print("Image size: " + completer.future.toString());
+  //debugPrint("Image size: " + completer.future.toString());
   return completer.future;
 }
 
@@ -24,10 +24,9 @@ Future<bool> check_if_image_is_square({
 }) async {
   Size image_size = await get_image_size(image: image);
   double height_divided_by_width = (image_size.height / image_size.width).abs();
-  bool image_is_square =
-      height_divided_by_width >= 1 && height_divided_by_width <= 1.1;
+  bool image_is_square = height_divided_by_width >= 1 && height_divided_by_width <= 1.1;
 
-  //print("Image is square: " + image_is_square.toString());
-  //print("Image height divided by width: " + height_divided_by_width.toString());
+  //debugPrint("Image is square: " + image_is_square.toString());
+  //debugPrint("Image height divided by width: " + height_divided_by_width.toString());
   return image_is_square;
 }
