@@ -9,7 +9,7 @@ String change_color_by_priority(String text, TextPriority text_priority) {
     color_code = "31";
   }
 
-  return "\x1B[${color_code}m${text}\x1B[0m";
+  return "\x1B[${color_code}m$text\x1B[0m";
 }
 
 enum TextPriority {

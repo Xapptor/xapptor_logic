@@ -16,7 +16,7 @@ show_alert({
   Timer(delay, () {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: Duration(seconds: 3),
+        duration: const Duration(seconds: 3),
         backgroundColor: alert_type == AlertType.success
             ? Colors.green
             : alert_type == AlertType.error

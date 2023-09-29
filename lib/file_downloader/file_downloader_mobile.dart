@@ -15,7 +15,7 @@ class FileDownloader {
   }) async {
     Uint8List bytes = base64.decode(src);
     final directory = await getTemporaryDirectory();
-    String file_path = directory.path + "/" + file_name;
+    String file_path = "${directory.path}/$file_name";
 
     final file = File(file_path);
     await file.writeAsBytes(bytes);

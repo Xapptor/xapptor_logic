@@ -2,9 +2,9 @@ int get_single_digit_number_from_string(String key) {
   List<int> key_code_units = key.codeUnits;
   int code_units_summary = 0;
 
-  key_code_units.forEach((code_unit) {
+  for (var code_unit in key_code_units) {
     code_units_summary += code_unit;
-  });
+  }
 
   //print("key_code_units: " + key_code_units.toString());
 

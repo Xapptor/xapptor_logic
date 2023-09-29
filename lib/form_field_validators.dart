@@ -142,7 +142,7 @@ class FormFieldValidators {
         return "Must contain 6 digits";
       }
     } else {
-      RegExp regex = new RegExp(pattern.toString());
+      RegExp regex = RegExp(pattern.toString());
       if (!regex.hasMatch(value)) {
         return message;
       } else {

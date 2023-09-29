@@ -31,7 +31,7 @@ create_coupons({
     document_id: "template",
     collection_id: "coupons",
     times: times,
-    base_id: "$base_id\_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
+    base_id: "${base_id}_d_${DateFormat('dd_MM_yy').format(DateTime.now())}",
     apply_random_number: true,
     add_values: add_values,
     update_values: update_values,
@@ -88,12 +88,10 @@ update_field_name_in_document({
   required String old_field,
   required String new_field,
 }) async {
-  if (document == null) {
-    document = await FirebaseFirestore.instance
+  document ??= await FirebaseFirestore.instance
         .collection(collection)
         .doc(document_id)
         .get();
-  }
   document.reference.update(
       {old_field: FieldValue.delete(), new_field: document.get(old_field)});
 }
@@ -185,7 +183,7 @@ duplicate_document({
         }
 
         if (base_id != null) {
-          String counter = times == 1 ? "" : "_" + ((i + 1).toString());
+          String counter = times == 1 ? "" : "_${i + 1}";
 
           if (apply_random_number) {
             int random_numer_1 = random_number_with_range(0, 9);
@@ -263,7 +261,7 @@ delete_field_in_collection({
 
 delete_corrupted_accounts() async {
   await FirebaseFirestore.instance.collection("users").get().then((collection) {
-    collection.docs.forEach((user) {
+    for (var user in collection.docs) {
       var user_data = user.data();
       if (user_data["gender"] == null &&
           user_data["birthday"] == null &&
@@ -272,7 +270,7 @@ delete_corrupted_accounts() async {
         user.reference.delete();
       }
       collection_counter++;
-    });
+    }
     print_collection_counter();
   });
 }
@@ -302,7 +300,7 @@ delete_corrupted_certificates() async {
       }
     });
 
-    Timer(Duration(milliseconds: 800), () {
+    Timer(const Duration(milliseconds: 800), () {
       print("certificates_counter $certificates_counter");
       print("certificates_corrupted_counter $certificates_corrupted_counter");
     });
@@ -415,7 +413,7 @@ Future<String> check_if_coupon_is_valid(
     MaterialBanner(
       content: Text(
         coupon_is_valid ? valid_message : invalid_message,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
         ),
       ),
@@ -438,7 +436,7 @@ Future<String> check_if_coupon_is_valid(
     ),
   );
 
-  await Future.delayed(Duration(milliseconds: 2300));
+  await Future.delayed(const Duration(milliseconds: 2300));
   ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
   return coupon_is_valid ? "home/courses" : "";
 }
@@ -501,12 +499,12 @@ get_coupons_usage_info(
     }
   });
 
-  Timer(Duration(seconds: 3), () {
+  Timer(const Duration(seconds: 3), () {
     print(coupons.length);
     print(name_list.length);
     print(course_was_completed_list.length);
 
-    final xlsio.Workbook workbook = new xlsio.Workbook();
+    final xlsio.Workbook workbook = xlsio.Workbook();
     final xlsio.Worksheet sheet = workbook.worksheets[0];
 
     sheet.getRangeByName("A1").setText("Coupon ID");
@@ -524,7 +522,7 @@ get_coupons_usage_info(
     sheet.autoFitColumn(3);
 
     String file_name =
-        "coupons_usage_info_" + date_created.toDate().toString() + ".xlsx";
+        "coupons_usage_info_${date_created.toDate()}.xlsx";
     file_name = file_name
         .replaceAll(":", "_")
         .replaceAll("-", "_")

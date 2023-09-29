@@ -7,6 +7,6 @@ Future<File> get_temporary_file_from_local({
   required String name,
 }) async {
   final directory = await getTemporaryDirectory();
-  File file = await File(directory.path + "/" + name).writeAsBytes(bytes);
+  File file = await File("${directory.path}/$name").writeAsBytes(bytes);
   return file;
 }

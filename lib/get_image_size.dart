@@ -6,7 +6,7 @@ Future<Size> get_image_size({
 }) async {
   Completer<Size> completer = Completer();
 
-  image.image.resolve(ImageConfiguration()).addListener(
+  image.image.resolve(const ImageConfiguration()).addListener(
     ImageStreamListener(
       (ImageInfo image, bool synchronousCall) {
         var myImage = image.image;

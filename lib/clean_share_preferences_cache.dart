@@ -42,9 +42,9 @@ clean_share_preferences_cache({
 
       prefs.remove(key_to_check);
 
-      specific_keys_to_delete.forEach((key) {
+      for (var key in specific_keys_to_delete) {
         prefs.remove(key);
-      });
+      }
     }
   }
 }

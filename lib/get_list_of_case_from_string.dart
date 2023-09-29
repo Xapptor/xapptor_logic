@@ -5,10 +5,10 @@ List<bool> get_list_of_case_from_string(String text) {
   List<bool> list_of_case = [];
   List<String> chars = text.characters.toList();
 
-  chars.forEach((char) {
+  for (var char in chars) {
     int index = text.indexOf(char);
     list_of_case.add(!(chars[index].toLowerCase() == chars[index]));
-  });
+  }
   return list_of_case;
 }
 

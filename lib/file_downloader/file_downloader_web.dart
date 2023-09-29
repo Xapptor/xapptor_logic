@@ -11,9 +11,9 @@ class FileDownloader {
     required String file_name,
   }) async {
     if (src.contains("http")) {
-      await window.open(src, "_self");
+      window.open(src, "_self");
     } else {
-      await AnchorElement(
+      AnchorElement(
         href: "data:application/octet-stream;charset=utf-16le;base64,$src",
       )
         ..setAttribute(

@@ -130,7 +130,7 @@ reached_limit_alert({
         title: Text(title),
         actions: <Widget>[
           TextButton(
-            child: Text("Ok"),
+            child: const Text("Ok"),
             onPressed: () async {
               Navigator.of(context).pop();
             },
