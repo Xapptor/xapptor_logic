@@ -23,11 +23,10 @@ clean_share_preferences_cache({
 
     int date_difference_in_seconds = DateTime.now().difference(last_date_translations_updated).inSeconds;
 
-    int date_difference_in_days = (date_difference_in_seconds / Duration.secondsPerDay).floor();
-
-    //debugPrint("date_difference_in_seconds: $date_difference_in_seconds");
-    //debugPrint("date_difference_in_days: $date_difference_in_days");
-    //debugPrint("cache_life_period_in_seconds: $cache_life_period_in_seconds");
+    // int date_difference_in_days = (date_difference_in_seconds / Duration.secondsPerDay).floor();
+    // debugPrint("date_difference_in_days: $date_difference_in_days");
+    // debugPrint("date_difference_in_seconds: $date_difference_in_seconds");
+    // debugPrint("cache_life_period_in_seconds: $cache_life_period_in_seconds");
 
     if (date_difference_in_seconds > cache_lifetime_in_seconds) {
       final prefs_keys = prefs.getKeys();
