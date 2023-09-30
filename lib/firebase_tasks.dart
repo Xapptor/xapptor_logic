@@ -111,7 +111,7 @@ update_item_value_in_array({
 
 update_users_gender() async {
   await FirebaseFirestore.instance.collection("users").get().then((collection) {
-    collection.docs.forEach((user) async {
+    for (var user in collection.docs) {
       var user_data = user.data();
       String user_gender = user_data["gender"].toLowerCase();
 
@@ -126,7 +126,7 @@ update_users_gender() async {
       }
 
       collection_counter++;
-    });
+    }
 
     print_collection_counter();
   });
@@ -256,8 +256,8 @@ delete_corrupted_certificates() async {
   int certificates_counter = 0;
   int certificates_corrupted_counter = 0;
 
-  await FirebaseFirestore.instance.collection("certificates").get().then((collection) {
-    collection.docs.forEach((certificate) async {
+  await FirebaseFirestore.instance.collection("certificates").get().then((collection) async {
+    for (var certificate in collection.docs) {
       certificates_counter++;
 
       var certificate_data = certificate.data();
@@ -268,7 +268,7 @@ delete_corrupted_certificates() async {
         debugPrint("id: ${certificate.id} user_id: ${certificate_data["user_id"]}");
         certificate.reference.delete();
       }
-    });
+    }
 
     Timer(const Duration(milliseconds: 800), () {
       debugPrint("certificates_counter $certificates_counter");
@@ -319,13 +319,13 @@ delete_all_files_in_a_path({
   required String path,
 }) async {
   ListResult folder_ref = await FirebaseStorage.instance.ref(path).listAll();
-  folder_ref.items.forEach((item) async {
+  for (var item in folder_ref.items) {
     item.delete();
-  });
+  }
 
-  folder_ref.prefixes.forEach((prefix) async {
+  for (var prefix in folder_ref.prefixes) {
     delete_all_files_in_a_path(path: prefix.fullPath);
-  });
+  }
 }
 
 // CHECK
@@ -421,7 +421,7 @@ get_coupons_usage_info(
 
   coupon_query_snapshot_docs.removeWhere((element) => element.id == "template");
 
-  coupon_query_snapshot_docs.forEach((element) async {
+  for (var element in coupon_query_snapshot_docs) {
     Coupon coupon = Coupon.from_snapshot(
       element.id,
       element.data() as Map<String, dynamic>,
@@ -452,7 +452,7 @@ get_coupons_usage_info(
       name_list.add("");
       course_was_completed_list.add("");
     }
-  });
+  }
 
   Timer(const Duration(seconds: 3), () {
     debugPrint(coupons.length.toString());
@@ -501,14 +501,14 @@ Future<String> save_temporary_file({
 
   // First delete old files in temp folder
 
-  temp_folder_ref.items.forEach((item) async {
+  for (var item in temp_folder_ref.items) {
     FullMetadata item_metadata = await item.getMetadata();
     int minutes_difference = DateTime.now().difference(item_metadata.timeCreated!).inMinutes;
 
     if (minutes_difference >= temp_minutes_cache) {
       item.delete();
     }
-  });
+  }
 
   await temp_file_ref.putData(bytes);
   String url = await temp_file_ref.getDownloadURL();
