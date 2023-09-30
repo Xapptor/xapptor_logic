@@ -19,6 +19,6 @@ class FileDownloader {
 
     final file = File(file_path);
     await file.writeAsBytes(bytes);
-    await Share.shareFiles([file_path]);
+    await Share.shareXFiles([XFile(file_path)]);
   }
 }

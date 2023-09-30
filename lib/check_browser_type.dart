@@ -9,7 +9,7 @@ enum BrowserType {
 Future<BrowserType> check_browser_type() async {
   final device_info_plugin = DeviceInfoPlugin();
   final device_info = await device_info_plugin.deviceInfo;
-  final map = device_info.toMap();
+  final map = device_info.data;
 
   BrowserType current_browser_type = BrowserType.none;
 
