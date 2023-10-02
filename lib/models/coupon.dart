@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Coupon Model.
-
 class Coupon {
   final String id;
   final DateTime date_created;
@@ -19,9 +17,8 @@ class Coupon {
     required this.product_id,
   });
 
-  Coupon.from_snapshot(String id, Map<String, dynamic> snapshot)
-      : id = id,
-        date_created = (snapshot['date_created'] as Timestamp).toDate(),
+  Coupon.from_snapshot(this.id, Map<String, dynamic> snapshot)
+      : date_created = (snapshot['date_created'] as Timestamp).toDate(),
         date_expiry = (snapshot['date_expiry'] as Timestamp).toDate(),
         used = snapshot['used'] ?? false,
         user_id = snapshot['user_id'] ?? "",
