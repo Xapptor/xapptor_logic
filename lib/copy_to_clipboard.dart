@@ -12,5 +12,5 @@ copy_to_clipboard({
       text: data,
     ),
   );
-  show_success_alert(context: context, message: message);
+  if (context.mounted) show_success_alert(context: context, message: message);
 }

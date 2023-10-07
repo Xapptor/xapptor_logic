@@ -370,36 +370,37 @@ Future<String> check_if_coupon_is_valid(
       }
     }
   }
-
-  ScaffoldMessenger.of(context).showMaterialBanner(
-    MaterialBanner(
-      content: Text(
-        coupon_is_valid ? valid_message : invalid_message,
-        style: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      leading: Icon(
-        coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
-        color: Colors.white,
-      ),
-      backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
-      actions: [
-        IconButton(
-          icon: const Icon(
-            Icons.close,
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        content: Text(
+          coupon_is_valid ? valid_message : invalid_message,
+          style: const TextStyle(
             color: Colors.white,
           ),
-          onPressed: () {
-            ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-          },
         ),
-      ],
-    ),
-  );
+        leading: Icon(
+          coupon_is_valid ? Icons.check_circle_rounded : Icons.info,
+          color: Colors.white,
+        ),
+        backgroundColor: coupon_is_valid ? Colors.green : Colors.red,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   await Future.delayed(const Duration(milliseconds: 2300));
-  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+  if (context.mounted) ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
   return coupon_is_valid ? "home/courses" : "";
 }
 

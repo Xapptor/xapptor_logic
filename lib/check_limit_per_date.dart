@@ -23,10 +23,7 @@ check_limit_per_date({
 }) async {
   User? current_user = FirebaseAuth.instance.currentUser;
   if (current_user != null) {
-    var user_snap = await FirebaseFirestore.instance
-        .collection("users")
-        .doc(current_user.uid)
-        .get();
+    var user_snap = await FirebaseFirestore.instance.collection("users").doc(current_user.uid).get();
     Map user_data = user_snap.data() as Map;
 
     Map<String, dynamic>? limit_field = user_data[limit_field_name];
@@ -36,8 +33,7 @@ check_limit_per_date({
 
     if (limit_field != null) {
       DateTime now = DateTime.now();
-      DateTime translation_limit_date =
-          (limit_field["date"] as Timestamp).toDate();
+      DateTime translation_limit_date = (limit_field["date"] as Timestamp).toDate();
 
       bool pass_the_limit = false;
 
@@ -46,8 +42,7 @@ check_limit_per_date({
           pass_the_limit = true;
         }
       } else {
-        if (now.difference(translation_limit_date).inSeconds >
-            cache_lifetime_in_seconds) {
+        if (now.difference(translation_limit_date).inSeconds > cache_lifetime_in_seconds) {
           pass_the_limit = true;
         }
       }
@@ -59,17 +54,18 @@ check_limit_per_date({
         if (limit_field[array_field_name] != null) {
           List limit_remote = limit_field[array_field_name];
 
-          if (limit_remote.contains(new_value) &&
-              !save_same_value_multiple_times) {
+          if (limit_remote.contains(new_value) && !save_same_value_multiple_times) {
             check_limit_per_date_callback();
           } else {
             if (limit_remote.length < limit) {
               call_add_new_value = true;
             } else {
-              reached_limit_alert(
-                context: context,
-                title: reached_limit_alert_title,
-              );
+              if (context.mounted) {
+                reached_limit_alert(
+                  context: context,
+                  title: reached_limit_alert_title,
+                );
+              }
             }
           }
         } else {
