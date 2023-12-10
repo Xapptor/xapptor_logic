@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -481,7 +480,7 @@ get_coupons_usage_info(
     file_name = file_name.replaceAll(":", "_").replaceAll("-", "_").replaceAll(" ", "_").replaceFirst(".", "_");
 
     FileDownloader.save(
-      src: base64Encode(workbook.saveAsStream()),
+      src: workbook.saveAsStream(),
       file_name: file_name,
     );
     workbook.dispose();

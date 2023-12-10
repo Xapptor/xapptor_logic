@@ -22,7 +22,7 @@ flutter pub get
 ### **File Downloader (Call Share in Mobile)**
 ```dart
 FileDownloader.save(
-    base64_string: pdf_base64,
+    base64_string: pdf_bytes,
     file_name: file_name,
 );
 ```

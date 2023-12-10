@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
+import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:html';
 
@@ -16,24 +17,26 @@ class FileDownloader {
   }
 
   static Future save({
-    // Source could be Base64 or Url
-    required String src,
+    required src, // Source could be Bytes or Url
     required String file_name,
+    Function? callback,
   }) async {
     await clean_temp_files();
-    if (src.contains("http")) {
-      _download(
-        src: src,
-        file_name: file_name,
-      );
-    } else {
+    if (src is String) {
+      if (src.contains("http")) {
+        _download(
+          src: src,
+          file_name: file_name,
+          callback: callback,
+        );
+      }
+    } else if (src is Uint8List) {
       Reference temp_file = storage.ref("temp/$file_name");
-      await temp_file.putString(src);
-      String download_url = await temp_file.getDownloadURL();
-
+      await temp_file.putData(src);
       _download(
-        src: download_url,
+        src: await temp_file.getDownloadURL(),
         file_name: file_name,
+        callback: callback,
       );
     }
   }
@@ -41,6 +44,7 @@ class FileDownloader {
   static Future _download({
     required String src,
     required String file_name,
+    required Function? callback,
   }) async {
     final anchor = AnchorElement(
       href: src,
@@ -52,5 +56,6 @@ class FileDownloader {
     anchor.download = src;
     anchor.click();
     anchor.remove();
+    if (callback != null) callback();
   }
 }

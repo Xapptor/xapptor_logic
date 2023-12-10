@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
@@ -10,15 +9,21 @@ class FileDownloader {
   FileDownloader._();
 
   static Future save({
-    required String src, // Source could be Base64 or Url
+    required src, // Source could be Bytes or Url
     required String file_name,
+    Function? callback,
   }) async {
-    Uint8List bytes = base64.decode(src);
-    final directory = await getTemporaryDirectory();
-    String file_path = "${directory.path}/$file_name";
+    if (src is Uint8List) {
+      final directory = await getTemporaryDirectory();
+      String file_path = "${directory.path}/$file_name";
 
-    final file = File(file_path);
-    await file.writeAsBytes(bytes);
-    await Share.shareXFiles([XFile(file_path)]);
+      final file = File(file_path);
+      await file.writeAsBytes(src);
+      await Share.shareXFiles([XFile(file_path)]);
+      if (callback != null) callback();
+    } else if (src is String) {
+      await Share.share(src);
+      if (callback != null) callback();
+    }
   }
 }
