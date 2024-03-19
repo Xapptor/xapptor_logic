@@ -327,6 +327,34 @@ delete_all_files_in_a_path({
   }
 }
 
+// Delete coupons from a date.
+
+delete_coupons_from_a_date({
+  required DateTime from_date,
+}) {
+  DateTime start_date = DateTime(from_date.year, from_date.month, from_date.day);
+  DateTime end_date = DateTime(from_date.year, from_date.month, from_date.day, 23, 59, 59);
+
+  FirebaseFirestore.instance
+      .collection("coupons")
+      .where("date_created", isGreaterThanOrEqualTo: start_date)
+      .where("date_created", isLessThanOrEqualTo: end_date)
+      .get()
+      .then((collection) {
+    for (var coupon in collection.docs) {
+      coupon.reference.delete();
+      collection_counter++;
+    }
+    print_collection_counter();
+  });
+}
+
+// Delete coupons generated today.
+
+delete_coupons_generated_today() {
+  delete_coupons_from_a_date(from_date: DateTime.now());
+}
+
 // CHECK
 
 // Check if coupon is valid.
