@@ -33,6 +33,9 @@ dependencies:
 
   xapptor_router:
     path: ../xapptor_router
+
+dependency_overrides:
+  device_info_plus: ^10.1.0
   
 dev_dependencies:
   flutter_test:
