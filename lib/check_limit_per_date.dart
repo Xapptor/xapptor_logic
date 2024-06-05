@@ -124,7 +124,7 @@ reached_limit_alert({
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        actions: <Widget>[
+        actions: [
           TextButton(
             child: const Text("Ok"),
             onPressed: () async {

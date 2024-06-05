@@ -9,7 +9,7 @@ authentication_needed_alert({
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text("First you need to authenticate yourself"),
-        actions: <Widget>[
+        actions: [
           TextButton(
             child: const Text("Cancel"),
             onPressed: () {
