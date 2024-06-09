@@ -1,8 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
-// Request position.
-
 Future<Position> request_position() async {
   bool serviceEnabled;
   LocationPermission permission;
@@ -21,13 +19,10 @@ Future<Position> request_position() async {
   }
 
   if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
+    return Future.error('Location permissions are permanently denied, we cannot request permissions.');
   }
   return await Geolocator.getCurrentPosition();
 }
-
-// Return address from position.
 
 Future<List<Placemark>> get_address_from_position(
   double? lat,

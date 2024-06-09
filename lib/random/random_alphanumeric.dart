@@ -1,10 +1,11 @@
 import 'dart:math';
 
 class RandomAlphanumeric {
-  String chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  String chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 
-  String generate({required int length}) {
+  String generate({
+    required int length,
+  }) {
     Random random = Random();
 
     Iterable<int> char_list = Iterable.generate(

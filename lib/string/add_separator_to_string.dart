@@ -1,6 +1,6 @@
 import 'package:characters/characters.dart';
 
-add_separator_to_string({
+String add_separator_to_string({
   required String string,
   required List<String> separators,
   required int interval,

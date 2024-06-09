@@ -6,7 +6,6 @@ Future<Uint8List> get_bytes_from_remote_image(String src) async {
   http.Response response = await http.get(
     Uri.parse(src),
   );
-
   return response.bodyBytes;
 }
 

@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/widgets.dart';
-import 'package:xapptor_logic/add_separator_to_string.dart';
+import 'package:xapptor_logic/string/add_separator_to_string.dart';
 
 String generate_random_id({
   bool use_separators = true,

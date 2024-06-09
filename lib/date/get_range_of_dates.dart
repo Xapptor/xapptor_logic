@@ -1,4 +1,7 @@
-List<DateTime> get_range_of_dates(DateTime date_1, DateTime date_2) {
+List<DateTime> get_range_of_dates(
+  DateTime date_1,
+  DateTime date_2,
+) {
   int dates_difference_in_days = date_2.difference(date_1).inDays;
 
   List<DateTime> range_of_dates = [];
@@ -12,7 +15,5 @@ List<DateTime> get_range_of_dates(DateTime date_1, DateTime date_2) {
       ),
     );
   }
-  //debugPrint("range_of_dates");
-  //debugPrint(range_of_dates);
   return range_of_dates;
 }

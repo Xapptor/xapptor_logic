@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// Send an email.
-
-send_email({
+Future send_email({
   required String to,
   required String subject,
   required String text,
@@ -15,10 +13,7 @@ send_email({
       "text": text,
     }
   };
+  if (html != null) email_json["html"] = html;
 
-  if (html != null) {
-    email_json["html"] = html;
-  }
-
-  FirebaseFirestore.instance.collection("emails").doc().set(email_json);
+  await FirebaseFirestore.instance.collection("emails").doc().set(email_json);
 }
