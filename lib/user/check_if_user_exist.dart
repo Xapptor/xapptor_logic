@@ -27,10 +27,9 @@ Future<bool> check_if_user_exist_by_email({
 Future<bool> check_if_user_exist_by_id({
   required String user_id,
 }) async {
-  await FirebaseFirestore.instance.collection("users").doc(user_id).get().then((doc) {
+  return await FirebaseFirestore.instance.collection("users").doc(user_id).get().then((doc) {
     return doc.exists;
   }).onError((error, stackTrace) {
     return false;
   });
-  return false;
 }
