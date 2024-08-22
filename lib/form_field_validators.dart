@@ -55,7 +55,7 @@ class FormFieldValidators {
 
       case FormFieldValidatorsType.name:
         {
-          if (value.length > 1 && value.length < 26) {
+          if (value.length > 1 && value.length < 50) {
             return null;
           } else {
             return "Enter a valid name";
