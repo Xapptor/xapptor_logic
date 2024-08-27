@@ -117,13 +117,13 @@ delete_all_files_in_a_path({
 
 // Delete coupons from a date.
 
-delete_coupons_from_a_date({
+Future<void> delete_coupons_from_a_date({
   required DateTime from_date,
-}) {
+}) async {
   DateTime start_date = DateTime(from_date.year, from_date.month, from_date.day);
   DateTime end_date = DateTime(from_date.year, from_date.month, from_date.day, 23, 59, 59);
 
-  FirebaseFirestore.instance
+  await FirebaseFirestore.instance
       .collection("coupons")
       .where("date_created", isGreaterThanOrEqualTo: start_date)
       .where("date_created", isLessThanOrEqualTo: end_date)
@@ -139,6 +139,6 @@ delete_coupons_from_a_date({
 
 // Delete coupons generated today.
 
-delete_coupons_generated_today() {
-  delete_coupons_from_a_date(from_date: DateTime.now());
+Future<void> delete_coupons_generated_today() async {
+  await delete_coupons_from_a_date(from_date: DateTime.now());
 }

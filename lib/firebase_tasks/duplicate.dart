@@ -37,7 +37,13 @@ duplicate_document({
         }
 
         if (base_id != null) {
-          String counter = times == 1 ? "" : "_${i + 1}";
+          String counter = times == 1 ? '' : '${i + 1}';
+
+          if (counter.length == 1) {
+            counter = "00$counter";
+          } else if (counter.length == 2) {
+            counter = "0$counter";
+          }
 
           if (apply_random_number) {
             int random_numer_1 = random_number_with_range(0, 9);
@@ -47,7 +53,7 @@ duplicate_document({
 
             String random_numer = "$random_numer_1$random_numer_2$random_numer_3$random_numer_4";
 
-            counter = "_$random_numer$counter";
+            counter = "_${counter}_$random_numer";
           }
 
           String doc_name = "$base_id$counter";
