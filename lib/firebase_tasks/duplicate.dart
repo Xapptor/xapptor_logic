@@ -6,8 +6,9 @@ import 'package:xapptor_logic/random/random_number_with_range.dart';
 
 // Duplicate document.
 
-duplicate_document({
+Future<void> duplicate_document({
   required String document_id,
+  String? new_document_id,
   required String collection_id,
   required int times,
   String? base_id,
@@ -17,7 +18,7 @@ duplicate_document({
 }) async {
   CollectionReference<Map<String, dynamic>> collection_reference = FirebaseFirestore.instance.collection(collection_id);
 
-  await FirebaseFirestore.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) {
+  await FirebaseFirestore.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) async {
     if (document_snapshot.data() != null) {
       for (var i = 0; i < times; i++) {
         Map<String, dynamic> new_data = document_snapshot.data()!;
@@ -61,7 +62,11 @@ duplicate_document({
 
           collection_reference.doc(doc_name).set(new_data);
         } else {
-          collection_reference.add(new_data);
+          if (new_document_id != null) {
+            await collection_reference.doc(new_document_id).set(new_data);
+          } else {
+            await collection_reference.add(new_data);
+          }
         }
       }
     }

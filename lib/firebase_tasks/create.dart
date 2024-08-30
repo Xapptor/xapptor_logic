@@ -5,13 +5,13 @@ import 'package:xapptor_logic/firebase_tasks/duplicate.dart';
 
 // Create coupons.
 
-create_coupons({
+Future<void> create_coupons({
   required int times,
   String? base_id,
   Map<String, dynamic>? add_values,
   Map<String, dynamic>? update_values,
-}) {
-  duplicate_document(
+}) async {
+  await duplicate_document(
     document_id: "template",
     collection_id: "coupons",
     times: times,
