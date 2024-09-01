@@ -2,10 +2,14 @@
 
 enum FormFieldValidatorsType {
   email,
+  website,
   phone,
   password,
   sms_code,
   name,
+  multiline_short,
+  multiline_medium,
+  multiline_long,
   custom,
 }
 
@@ -39,6 +43,15 @@ class FormFieldValidators {
         }
         break;
 
+      // Website must have a valid structure.
+
+      case FormFieldValidatorsType.website:
+        {
+          pattern = r'^((http|https)://)?(www.)?[a-z0-9]+\.[a-z]+(/.[a-z]+)?$';
+          message = 'Website format is invalid';
+        }
+        break;
+
       case FormFieldValidatorsType.phone:
         {}
         break;
@@ -51,7 +64,7 @@ class FormFieldValidators {
         {}
         break;
 
-      // Name length must be longer than 1 and shorter than 26.
+      // Name length must be longer than 1 and shorter than 50.
 
       case FormFieldValidatorsType.name:
         {
@@ -59,6 +72,39 @@ class FormFieldValidators {
             return null;
           } else {
             return "Enter a valid name";
+          }
+        }
+
+      // Multiline short length must be longer than 1 and shorter than 100.
+
+      case FormFieldValidatorsType.multiline_short:
+        {
+          if (value.length > 1 && value.length < 100) {
+            return null;
+          } else {
+            return custom_message ?? "Enter a valid description";
+          }
+        }
+
+      // Multiline medium length must be longer than 1 and shorter than 500.
+
+      case FormFieldValidatorsType.multiline_medium:
+        {
+          if (value.length > 1 && value.length < 500) {
+            return null;
+          } else {
+            return custom_message ?? "Enter a valid description";
+          }
+        }
+
+      // Multiline long length must be longer than 1 and shorter than 1000.
+
+      case FormFieldValidatorsType.multiline_long:
+        {
+          if (value.length > 1 && value.length < 1000) {
+            return null;
+          } else {
+            return custom_message ?? "Enter a valid description";
           }
         }
 
