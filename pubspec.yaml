@@ -31,9 +31,14 @@ dependencies:
 
   # xapptor_router: ^0.0.2
 
+  xapptor_db:
+    path: ../xapptor_db
   xapptor_router:
     path: ../xapptor_router
   
+dependency_overrides:
+  web: ^1.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -43,7 +48,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
-flutter:
+# flutter:
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

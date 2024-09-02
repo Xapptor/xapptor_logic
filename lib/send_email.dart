@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 
 Future send_email({
   required String to,
@@ -15,5 +15,5 @@ Future send_email({
   };
   if (html != null) email_json["html"] = html;
 
-  await FirebaseFirestore.instance.collection("emails").doc().set(email_json);
+  await XapptorDB.instance.collection("emails").doc().set(email_json);
 }

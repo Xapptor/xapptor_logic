@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xapptor_logic/models/coupon.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 
 // CHECK
 
@@ -18,7 +19,7 @@ Future<String> check_if_coupon_is_valid(
 
   if (user_id == null) return "login";
 
-  DocumentSnapshot coupon_snapshot = await FirebaseFirestore.instance.collection("coupons").doc(coupon_id).get();
+  DocumentSnapshot coupon_snapshot = await XapptorDB.instance.collection("coupons").doc(coupon_id).get();
 
   if (coupon_snapshot.exists) {
     Coupon coupon = Coupon.from_snapshot(
@@ -38,7 +39,7 @@ Future<String> check_if_coupon_is_valid(
             "date_used": FieldValue.serverTimestamp(),
           });
 
-          await FirebaseFirestore.instance.collection("users").doc(user_id).update({
+          await XapptorDB.instance.collection("users").doc(user_id).update({
             "products_acquired": FieldValue.arrayUnion([coupon.product_id]),
           });
         }

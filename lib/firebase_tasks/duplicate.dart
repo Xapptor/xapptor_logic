@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:xapptor_logic/random/random_number_with_range.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 
 // DUPLICATE
 
@@ -16,9 +17,9 @@ Future<void> duplicate_document({
   Map<String, dynamic>? add_values,
   Map<String, dynamic>? update_values,
 }) async {
-  CollectionReference<Map<String, dynamic>> collection_reference = FirebaseFirestore.instance.collection(collection_id);
+  CollectionReference<Map<String, dynamic>> collection_reference = XapptorDB.instance.collection(collection_id);
 
-  await FirebaseFirestore.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) async {
+  await XapptorDB.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) async {
     if (document_snapshot.data() != null) {
       for (var i = 0; i < times; i++) {
         Map<String, dynamic> new_data = document_snapshot.data()!;
@@ -83,7 +84,7 @@ duplicate_item_in_array({
   required int times,
   required Function callback,
 }) async {
-  await FirebaseFirestore.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) {
+  await XapptorDB.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) {
     Map<String, dynamic> original_field_value = document_snapshot.data()![field_key][index];
 
     List new_array = document_snapshot.data()![field_key];

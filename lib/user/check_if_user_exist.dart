@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 Future<bool> check_if_user_exist_by_email({
@@ -27,7 +27,7 @@ Future<bool> check_if_user_exist_by_email({
 Future<bool> check_if_user_exist_by_id({
   required String user_id,
 }) async {
-  return await FirebaseFirestore.instance.collection("users").doc(user_id).get().then((doc) {
+  return await XapptorDB.instance.collection("users").doc(user_id).get().then((doc) {
     return doc.exists;
   }).onError((error, stackTrace) {
     return false;

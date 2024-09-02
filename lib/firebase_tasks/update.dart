@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:xapptor_logic/firebase_tasks/collection_counter.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 
 // UPDATE
 
@@ -10,7 +11,7 @@ update_field_value_in_collection({
   required dynamic value,
   required String collection,
 }) async {
-  QuerySnapshot collection_snapshot = await FirebaseFirestore.instance.collection(collection).get();
+  QuerySnapshot collection_snapshot = await XapptorDB.instance.collection(collection).get();
 
   for (var document in collection_snapshot.docs) {
     document.reference.update({field: value});
@@ -26,7 +27,7 @@ update_field_name_in_collection({
   required String old_field,
   required String new_field,
 }) async {
-  QuerySnapshot collection_snapshot = await FirebaseFirestore.instance.collection(collection).get();
+  QuerySnapshot collection_snapshot = await XapptorDB.instance.collection(collection).get();
 
   for (var document in collection_snapshot.docs) {
     update_field_name_in_document(
@@ -49,7 +50,7 @@ update_field_name_in_document({
   required String old_field,
   required String new_field,
 }) async {
-  document ??= await FirebaseFirestore.instance.collection(collection).doc(document_id).get();
+  document ??= await XapptorDB.instance.collection(collection).doc(document_id).get();
   document.reference.update({old_field: FieldValue.delete(), new_field: document.get(old_field)});
 }
 
@@ -62,7 +63,7 @@ update_item_value_in_array({
   required dynamic field_value,
   required int index,
 }) async {
-  await FirebaseFirestore.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) {
+  await XapptorDB.instance.collection(collection_id).doc(document_id).get().then((document_snapshot) {
     List original_array = document_snapshot.data()![field_key];
     original_array[index] = field_value;
 
@@ -73,7 +74,7 @@ update_item_value_in_array({
 // Update users gender.
 
 update_users_gender() async {
-  await FirebaseFirestore.instance.collection("users").get().then((collection) {
+  await XapptorDB.instance.collection("users").get().then((collection) {
     for (var user in collection.docs) {
       var user_data = user.data();
       String user_gender = user_data["gender"].toLowerCase();

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:xapptor_logic/file_downloader/file_downloader.dart';
 import 'package:xapptor_logic/models/coupon.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xlsio;
+import 'package:xapptor_db/xapptor_db.dart';
 
 // GET
 
@@ -13,7 +14,7 @@ get_coupons_usage_info(
   Timestamp date_created,
 ) async {
   QuerySnapshot coupon_query_snapshot =
-      await FirebaseFirestore.instance.collection("coupons").where("date_created", isEqualTo: date_created).get();
+      await XapptorDB.instance.collection("coupons").where("date_created", isEqualTo: date_created).get();
 
   List<DocumentSnapshot> coupon_query_snapshot_docs = coupon_query_snapshot.docs;
 
@@ -32,7 +33,7 @@ get_coupons_usage_info(
     coupons.add(coupon);
 
     if (coupon.user_id != "") {
-      DocumentSnapshot user_snap = await FirebaseFirestore.instance.collection("users").doc(coupon.user_id).get();
+      DocumentSnapshot user_snap = await XapptorDB.instance.collection("users").doc(coupon.user_id).get();
 
       Map user_data = user_snap.data() as Map<String, dynamic>;
 

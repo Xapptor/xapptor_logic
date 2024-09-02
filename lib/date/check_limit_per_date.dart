@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:xapptor_router/app_screens.dart';
 import 'authentication_needed_alert.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 
 enum ReachLimit {
   by_day,
@@ -23,7 +24,7 @@ check_limit_per_date({
 }) async {
   User? current_user = FirebaseAuth.instance.currentUser;
   if (current_user != null) {
-    var user_snap = await FirebaseFirestore.instance.collection("users").doc(current_user.uid).get();
+    var user_snap = await XapptorDB.instance.collection("users").doc(current_user.uid).get();
     Map user_data = user_snap.data() as Map;
 
     Map<String, dynamic>? limit_field = user_data[limit_field_name];

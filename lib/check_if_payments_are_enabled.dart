@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:xapptor_db/xapptor_db.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 Future<bool> check_if_payments_are_enabled() async {
-  var payments_snap = await FirebaseFirestore.instance.collection("metadata").doc("payments").get();
+  var payments_snap = await XapptorDB.instance.collection("metadata").doc("payments").get();
 
   if (payments_snap.exists) {
     Map payments_data = payments_snap.data() as Map;
