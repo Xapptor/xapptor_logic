@@ -10,7 +10,32 @@ enum FormFieldValidatorsType {
   multiline_short,
   multiline_medium,
   multiline_long,
-  custom,
+  custom;
+
+  int? get_Length() {
+    switch (this) {
+      case FormFieldValidatorsType.email:
+        return 320;
+      case FormFieldValidatorsType.website:
+        return 1000;
+      case FormFieldValidatorsType.phone:
+        return 13;
+      case FormFieldValidatorsType.password:
+        return 50;
+      case FormFieldValidatorsType.sms_code:
+        return 6;
+      case FormFieldValidatorsType.name:
+        return 50;
+      case FormFieldValidatorsType.multiline_short:
+        return 100;
+      case FormFieldValidatorsType.multiline_medium:
+        return 500;
+      case FormFieldValidatorsType.multiline_long:
+        return 1000;
+      case FormFieldValidatorsType.custom:
+        return null;
+    }
+  }
 }
 
 // Check if the Field Value has a good structure for each type.
@@ -64,47 +89,47 @@ class FormFieldValidators {
         {}
         break;
 
-      // Name length must be longer than 1 and shorter than 50.
+      // Name length must be longer than 0 and shorter or equal to 50.
 
       case FormFieldValidatorsType.name:
         {
-          if (value.length > 1 && value.length < 50) {
+          if (value.isNotEmpty && value.length <= FormFieldValidatorsType.name.get_Length()!) {
             return null;
           } else {
-            return "Enter a valid name";
+            return "Enter a valid name, 1-50 chars";
           }
         }
 
-      // Multiline short length must be longer than 1 and shorter than 100.
+      // Multiline short length must be longer than 0 and shorter or equal to 100.
 
       case FormFieldValidatorsType.multiline_short:
         {
-          if (value.length > 1 && value.length < 100) {
+          if (value.isNotEmpty && value.length <= FormFieldValidatorsType.multiline_short.get_Length()!) {
             return null;
           } else {
-            return custom_message ?? "Enter a valid description";
+            return custom_message ?? "Enter a valid description, 1-100 chars";
           }
         }
 
-      // Multiline medium length must be longer than 1 and shorter than 500.
+      // Multiline medium length must be longer than 0 and shorter or equal to 500.
 
       case FormFieldValidatorsType.multiline_medium:
         {
-          if (value.length > 1 && value.length < 500) {
+          if (value.isNotEmpty && value.length <= FormFieldValidatorsType.multiline_medium.get_Length()!) {
             return null;
           } else {
-            return custom_message ?? "Enter a valid description";
+            return custom_message ?? "Enter a valid description, 1-500 chars";
           }
         }
 
-      // Multiline long length must be longer than 1 and shorter than 1000.
+      // Multiline long length must be longer than 0 and shorter or equal to 1000.
 
       case FormFieldValidatorsType.multiline_long:
         {
-          if (value.length > 1 && value.length < 1000) {
+          if (value.isNotEmpty && value.length <= FormFieldValidatorsType.multiline_long.get_Length()!) {
             return null;
           } else {
-            return custom_message ?? "Enter a valid description";
+            return custom_message ?? "Enter a valid description, 1-1000 chars";
           }
         }
 
