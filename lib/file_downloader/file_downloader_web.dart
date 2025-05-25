@@ -2,7 +2,7 @@
 
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:html';
+import 'package:web/web.dart' as web;
 
 class FileDownloader {
   FileDownloader._();
@@ -46,9 +46,10 @@ class FileDownloader {
     required String file_name,
     required Function? callback,
   }) async {
-    final anchor = AnchorElement(
-      href: src,
-    );
+    final anchor = web.HTMLAnchorElement();
+
+    anchor.href = src;
+
     anchor.setAttribute(
       "download",
       file_name,
