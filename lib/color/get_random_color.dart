@@ -10,13 +10,13 @@ Color get_random_color({
 
   if (seed_color != null) {
     int random_number_for_red = random_number_with_range(-color_difference, color_difference).clamp(0, 255);
-    int random_red = seed_color.red + random_number_for_red;
+    int random_red = (seed_color.r + random_number_for_red) as int;
 
     int random_number_for_green = random_number_with_range(-color_difference, color_difference).clamp(0, 255);
-    int random_green = seed_color.green + random_number_for_green;
+    int random_green = (seed_color.g + random_number_for_green) as int;
 
     int random_number_for_blue = random_number_with_range(-color_difference, color_difference).clamp(0, 255);
-    int random_blue = seed_color.blue + random_number_for_blue;
+    int random_blue = (seed_color.b + random_number_for_blue) as int;
 
     random_color = Color.fromRGBO(random_red, random_green, random_blue, 1);
   } else {
