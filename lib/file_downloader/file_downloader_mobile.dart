@@ -19,10 +19,21 @@ class FileDownloader {
 
       final file = File(file_path);
       await file.writeAsBytes(src);
-      await Share.shareXFiles([XFile(file_path)]);
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [
+            XFile(file_path),
+          ],
+        ),
+      );
+
       if (callback != null) callback();
     } else if (src is String) {
-      await Share.share(src);
+      await SharePlus.instance.share(
+        ShareParams(
+          text: src,
+        ),
+      );
       if (callback != null) callback();
     }
   }

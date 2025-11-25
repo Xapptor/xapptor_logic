@@ -5,5 +5,5 @@ int random_number_with_range(
   int max,
 ) {
   final random = Random();
-  return min + random.nextInt(max - min);
+  return min + random.nextInt(max - min + 1);
 }
