@@ -8,9 +8,9 @@ Future<Size> get_image_size({
 
   image.image.resolve(const ImageConfiguration()).addListener(
     ImageStreamListener(
-      (ImageInfo image, bool synchronousCall) {
-        var myImage = image.image;
-        Size size = Size(myImage.width.toDouble(), myImage.height.toDouble());
+      (ImageInfo image, bool synchronous_call) {
+        var my_image = image.image;
+        Size size = Size(my_image.width.toDouble(), my_image.height.toDouble());
         completer.complete(size);
       },
     ),
