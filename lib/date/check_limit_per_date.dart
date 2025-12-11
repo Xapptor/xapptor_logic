@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:xapptor_router/app_screens.dart';
+import 'package:xapptor_router/V2/app_screens_v2.dart';
 import 'authentication_needed_alert.dart';
 import 'package:xapptor_db/xapptor_db.dart';
 
@@ -91,7 +91,7 @@ check_limit_per_date({
     authentication_needed_alert(
       context: context,
       accept_button_callback: () {
-        open_screen("login");
+        open_screen_v2("login");
       },
     );
   }
